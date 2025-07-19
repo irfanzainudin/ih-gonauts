@@ -5,7 +5,15 @@ import { mockSpaces } from "../lib/mockData";
 import SpaceFilters from "../components/booking/SpaceFilters";
 import SpaceCard from "../components/booking/SpaceCard";
 import { Button } from "../components/shared/ui/button";
-import { Search, Calendar } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../components/ui/sheet";
+import { Search, Calendar, Filter } from "lucide-react";
 
 const BookingPage = () => {
   const [searchParams] = useSearchParams();
@@ -88,16 +96,7 @@ const BookingPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <Button
-          variant="outline"
-          onClick={() => navigate("/")}
-          className="mb-6"
-        >
-          ← Back to Home
-        </Button>
-
-        {/* Page Header */}
+        {/* Page Header - Moved above the grid */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Book Your Space
@@ -119,26 +118,68 @@ const BookingPage = () => {
               </span>
             </div>
           )}
+
+          {/* Results Count - Moved to header area */}
+          <div className="mt-4 flex justify-between items-center">
+            <p className="text-gray-600">
+              {filteredSpaces.length} space
+              {filteredSpaces.length !== 1 ? "s" : ""} found
+            </p>
+
+            {/* Mobile Filter Button */}
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Filter className="w-4 h-4" />
+                    Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                  <SheetHeader>
+                    <SheetTitle>Filters</SheetTitle>
+                    <SheetDescription>
+                      Customize your search to find the perfect space
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="overflow-y-auto max-h-[calc(100vh-120px)]">
+                    <SpaceFilters
+                      filters={filters}
+                      onFiltersChange={handleFilterChange}
+                      inSheetComponent={true}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
-            <SpaceFilters
-              filters={filters}
-              onFiltersChange={handleFilterChange}
-            />
+          {/* Left Sidebar - Back Button and Filters Only (Desktop Only) */}
+          <div className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-20">
+              {/* Back Button */}
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/")}
+                  className="w-full"
+                >
+                  ← Back to Home
+                </Button>
+              </div>
+
+              {/* Filters */}
+              <SpaceFilters
+                filters={filters}
+                onFiltersChange={handleFilterChange}
+              />
+            </div>
           </div>
 
-          {/* Space Listings */}
+          {/* Right Side - Search Results */}
           <div className="lg:col-span-3">
-            <div className="mb-6 flex justify-between items-center">
-              <p className="text-gray-600">
-                {filteredSpaces.length} space
-                {filteredSpaces.length !== 1 ? "s" : ""} found
-              </p>
-            </div>
-
             <div className="grid md:grid-cols-2 gap-6">
               {filteredSpaces.map((space) => (
                 <SpaceCard key={space.id} space={space} />
