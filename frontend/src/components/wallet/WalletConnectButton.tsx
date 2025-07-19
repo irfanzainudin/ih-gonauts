@@ -1,7 +1,6 @@
 import {
   useWallets,
   useConnectWallet,
-  useCurrentWallet,
   useDisconnectWallet,
   useCurrentAccount,
 } from "@iota/dapp-kit";
@@ -22,18 +21,22 @@ import {
   ExternalLink,
   Home,
   Building,
+  Loader2,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import { useWalletConnection } from "@/hooks/useWalletConnection";
+import { useWalletStore } from "@/lib/walletStore";
 
 const WalletConnectButton = () => {
   const wallets = useWallets();
   const { mutate: connect, isPending } = useConnectWallet();
-  const currentWallet = useCurrentWallet();
   const currentAccount = useCurrentAccount();
   const { mutate: disconnect } = useDisconnectWallet();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isConnected, isAutoConnecting } = useWalletConnection();
+  const { setDisconnected } = useWalletStore();
 
   const isOwnerPage = location.pathname.startsWith("/owner");
 
@@ -62,6 +65,9 @@ const WalletConnectButton = () => {
   };
 
   const handleDisconnect = () => {
+    // Clear the store first to prevent auto-reconnection
+    setDisconnected();
+
     disconnect(undefined, {
       onSuccess: () => {
         console.log("Wallet disconnected");
@@ -98,7 +104,21 @@ const WalletConnectButton = () => {
     return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
 
-  const isConnected = currentWallet?.isConnected;
+  // Show auto-connecting state
+  if (isAutoConnecting) {
+    return (
+      <Button
+        variant="outline"
+        disabled
+        className="bg-white/10 border-blue-500/50 text-blue-400 hover:bg-white/20 w-10 h-10 p-0 sm:w-40 sm:h-auto sm:p-2"
+      >
+        <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <span className="hidden sm:inline">Reconnecting...</span>
+        </div>
+      </Button>
+    );
+  }
 
   if (isConnected && currentAccount) {
     return (
@@ -122,8 +142,8 @@ const WalletConnectButton = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-80 bg-gray-900/95 backdrop-blur border-gray-700"
           align="end"
+          className="w-80 bg-gray-900/95 backdrop-blur border-gray-700"
         >
           {/* Wallet Info */}
           <DropdownMenuLabel className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
@@ -136,9 +156,7 @@ const WalletConnectButton = () => {
                 />
               </div>
               <div>
-                <p className="text-white font-medium">
-                  {currentWallet?.currentWallet?.name || "IOTA Wallet"}
-                </p>
+                <p className="text-white font-medium">IOTA Wallet</p>
                 <p className="text-gray-400 text-sm font-mono">
                   {truncateAddress(currentAccount.address)}
                 </p>

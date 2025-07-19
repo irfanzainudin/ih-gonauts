@@ -21,6 +21,7 @@ import {
   Search,
   Wallet,
   CreditCard,
+  Loader2,
 } from "lucide-react";
 import { useWalletConnection } from "../hooks/useWalletConnection";
 import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
@@ -31,7 +32,7 @@ import { toast } from "sonner";
 const SpaceDetailPage = () => {
   const { spaceId } = useParams<{ spaceId: string }>();
   const navigate = useNavigate();
-  const { isConnected } = useWalletConnection();
+  const { isConnected, isAutoConnecting } = useWalletConnection();
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showStripeModal, setShowStripeModal] = useState(false);
   const wallets = useWallets();
@@ -424,10 +425,20 @@ const SpaceDetailPage = () => {
                     <div className="space-y-3">
                       <Button
                         onClick={handleIotaWalletBooking}
+                        disabled={isAutoConnecting}
                         className="w-full bg-purple-600 hover:bg-purple-700"
                       >
-                        <Wallet className="w-4 h-4 mr-2" />
-                        Book with IOTA Wallet
+                        {isAutoConnecting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Reconnecting...
+                          </>
+                        ) : (
+                          <>
+                            <Wallet className="w-4 h-4 mr-2" />
+                            Book with IOTA Wallet
+                          </>
+                        )}
                       </Button>
 
                       <Button
