@@ -30,6 +30,11 @@ const PopularPlacesSection = () => {
     navigate(`/booking/space/${spaceId}`);
   };
 
+  const handleBookNowClick = (e: React.MouseEvent, spaceId: string) => {
+    e.stopPropagation();
+    navigate(`/booking/space/${spaceId}`);
+  };
+
   const getTypeColor = (type: string) => {
     switch (type) {
       case "sport":
@@ -136,10 +141,7 @@ const PopularPlacesSection = () => {
 
                       <Button
                         className="w-full mt-2 sm:mt-3 text-xs sm:text-sm py-1 sm:py-2"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePlaceClick(place.id);
-                        }}
+                        onClick={(e) => handleBookNowClick(e, place.id)}
                       >
                         Book Now
                       </Button>

@@ -20,10 +20,18 @@ import {
   Star,
   Search,
 } from "lucide-react";
+import { useWalletConnection } from "../hooks/useWalletConnection";
+import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
+import { useWallets, useConnectWallet } from "@iota/dapp-kit";
+import { toast } from "sonner";
 
 const SpaceDetailPage = () => {
   const { spaceId } = useParams<{ spaceId: string }>();
   const navigate = useNavigate();
+  const { isConnected } = useWalletConnection();
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const wallets = useWallets();
+  const { mutate: connect, isPending } = useConnectWallet();
 
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
@@ -81,6 +89,11 @@ const SpaceDetailPage = () => {
   const handleBooking = async () => {
     if (selectedTimeSlots.length === 0 || !space) return;
 
+    if (!isConnected) {
+      setShowWalletModal(true);
+      return;
+    }
+
     const bookingRequest: BookingRequest = {
       spaceId: space.id,
       date: selectedDate,
@@ -95,6 +108,31 @@ const SpaceDetailPage = () => {
       `Booking confirmed for ${space.name}! Total: RM${bookingSummary.totalPrice}`
     );
     navigate("/booking");
+  };
+
+  const handleConnectWallet = () => {
+    if (wallets.length === 0) {
+      toast.error(
+        "No wallets detected. Please install a compatible IOTA wallet like Firefly or Bloom."
+      );
+      return;
+    }
+
+    // Connect to the first available wallet
+    connect(
+      { wallet: wallets[0] },
+      {
+        onSuccess: () => {
+          console.log("Connected to wallet:", wallets[0].name);
+          toast.success(`Successfully connected to ${wallets[0].name}!`);
+          setShowWalletModal(false);
+        },
+        onError: (error) => {
+          console.error("Failed to connect to wallet:", error);
+          toast.error(`Failed to connect wallet: ${error.message}`);
+        },
+      }
+    );
   };
 
   const formatDate = (dateStr: string) => {
@@ -350,6 +388,13 @@ const SpaceDetailPage = () => {
           </div>
         </div>
       </div>
+
+      <WalletRequiredModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
+        onConnectWallet={handleConnectWallet}
+        isConnecting={isPending}
+      />
     </div>
   );
 };
