@@ -1,7 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../shared/ui/button";
+import { Badge } from "../shared/ui/badge";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   const trustLogos = [
     "Sport Centers",
     "Coworking Hubs",
@@ -41,11 +44,7 @@ const HeroSection = () => {
                 className="bg-black text-white hover:bg-gray-800 px-8"
                 tabIndex={0}
                 aria-label="Start Booking Spaces"
-                onClick={() =>
-                  document
-                    .getElementById("spaces")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
+                onClick={() => navigate("/booking")}
               >
                 Book Now
               </Button>

@@ -1,26 +1,43 @@
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../shared/ui/button";
+import { Separator } from "../shared/ui/separator";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   const footerLinks = {
     platform: [
-      { name: "Browse Spaces", href: "#" },
-      { name: "List Your Space", href: "#" },
-      { name: "Rewards Program", href: "#" },
-      { name: "IOTA Integration", href: "#" },
+      { name: "Browse Spaces", href: "/booking", isRoute: true },
+      { name: "List Your Space", href: "#", isRoute: false },
+      { name: "Rewards Program", href: "#how-it-works", isRoute: false },
+      { name: "IOTA Integration", href: "#how-it-works", isRoute: false },
     ],
     spaces: [
-      { name: "Sport Venues", href: "#" },
-      { name: "Coworking Spaces", href: "#" },
-      { name: "Meeting Rooms", href: "#" },
-      { name: "Event Venues", href: "#" },
+      { name: "Sport Venues", href: "/booking?type=sport", isRoute: true },
+      {
+        name: "Coworking Spaces",
+        href: "/booking?type=coworking",
+        isRoute: true,
+      },
+      { name: "Meeting Rooms", href: "/booking?type=meeting", isRoute: true },
+      { name: "Event Venues", href: "/booking?type=event", isRoute: true },
     ],
     support: [
-      { name: "Help Center", href: "#" },
-      { name: "Contact Us", href: "#" },
-      { name: "Access Issues", href: "#" },
-      { name: "Terms & Conditions", href: "#" },
+      { name: "Help Center", href: "#", isRoute: false },
+      { name: "Contact Us", href: "#", isRoute: false },
+      { name: "Access Issues", href: "#", isRoute: false },
+      { name: "Terms & Conditions", href: "#", isRoute: false },
     ],
+  };
+
+  const handleLinkClick = (link: { href: string; isRoute: boolean }) => {
+    if (link.isRoute) {
+      navigate(link.href);
+    } else if (link.href.startsWith("#")) {
+      document
+        .getElementById(link.href.substring(1))
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -41,11 +58,7 @@ const Footer = () => {
             className="bg-white text-blue-600 hover:bg-blue-50 px-8"
             tabIndex={0}
             aria-label="Start Booking Spaces"
-            onClick={() =>
-              document
-                .getElementById("spaces")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
+            onClick={() => navigate("/booking")}
           >
             Start Booking
           </Button>
@@ -110,14 +123,14 @@ const Footer = () => {
                   <ul className="space-y-3">
                     {footerLinks.platform.map((link) => (
                       <li key={link.name}>
-                        <a
-                          href={link.href}
-                          className="text-gray-400 hover:text-white transition-colors"
+                        <button
+                          onClick={() => handleLinkClick(link)}
+                          className="text-gray-400 hover:text-white transition-colors text-left"
                           tabIndex={0}
                           aria-label={link.name}
                         >
                           {link.name}
-                        </a>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -129,14 +142,14 @@ const Footer = () => {
                   <ul className="space-y-3">
                     {footerLinks.spaces.map((link) => (
                       <li key={link.name}>
-                        <a
-                          href={link.href}
-                          className="text-gray-400 hover:text-white transition-colors"
+                        <button
+                          onClick={() => handleLinkClick(link)}
+                          className="text-gray-400 hover:text-white transition-colors text-left"
                           tabIndex={0}
                           aria-label={link.name}
                         >
                           {link.name}
-                        </a>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -148,14 +161,14 @@ const Footer = () => {
                   <ul className="space-y-3">
                     {footerLinks.support.map((link) => (
                       <li key={link.name}>
-                        <a
-                          href={link.href}
-                          className="text-gray-400 hover:text-white transition-colors"
+                        <button
+                          onClick={() => handleLinkClick(link)}
+                          className="text-gray-400 hover:text-white transition-colors text-left"
                           tabIndex={0}
                           aria-label={link.name}
                         >
                           {link.name}
-                        </a>
+                        </button>
                       </li>
                     ))}
                   </ul>

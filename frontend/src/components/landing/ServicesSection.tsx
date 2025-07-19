@@ -1,13 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../shared/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "../shared/ui/card";
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
+
   const services = [
     {
       id: 1,
@@ -84,6 +87,7 @@ const ServicesSection = () => {
                   className="w-full"
                   tabIndex={0}
                   aria-label={`Explore ${service.title} options`}
+                  onClick={() => navigate("/booking")}
                 >
                   Explore Options
                 </Button>

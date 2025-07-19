@@ -1,28 +1,28 @@
-import Topbar from "@/components/Topbar";
-import HeroSection from "@/components/HeroSection";
-import ServicesSection from "@/components/ServicesSection";
-import ProcessSection from "@/components/ProcessSection";
-import AboutSection from "@/components/AboutSection";
-import TestimonialSection from "@/components/TestimonialSection";
-import WhyChooseUsSection from "@/components/WhyChooseUsSection";
-import FAQSection from "@/components/FAQSection";
-import Footer from "@/components/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Topbar from "@/components/landing/Topbar";
+import LandingPage from "./pages/LandingPage";
+import BookingPage from "./pages/BookingPage";
+import SpaceDetailPage from "./pages/SpaceDetailPage";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Topbar />
-      <main className="pt-16">
-        <HeroSection />
-        <ServicesSection />
-        <ProcessSection />
-        <AboutSection />
-        <TestimonialSection />
-        <WhyChooseUsSection />
-        <FAQSection />
-        <Footer />
-      </main>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-white">
+        <Topbar />
+        <main className="pt-16">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/booking" element={<BookingPage />} />
+            <Route
+              path="/booking/space/:spaceId"
+              element={<SpaceDetailPage />}
+            />
+            {/* Fallback route */}
+            <Route path="*" element={<LandingPage />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
