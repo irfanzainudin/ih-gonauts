@@ -66,22 +66,6 @@ const BookingPage = () => {
     setFilters(newFilters);
   };
 
-  const getFilteredTypeLabel = () => {
-    if (!filters.types || filters.types.length === 4) {
-      return "All Spaces";
-    }
-    if (filters.types.length === 1) {
-      const typeLabels = {
-        sport: "Sport Venues",
-        meeting: "Meeting Rooms",
-        coworking: "Coworking Spaces",
-        event: "Event Halls",
-      };
-      return typeLabels[filters.types[0]];
-    }
-    return `${filters.types.length} Space Types`;
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -93,13 +77,6 @@ const BookingPage = () => {
           <p className="text-gray-600">
             Find and reserve the perfect space for your needs across Malaysia
           </p>
-          {filters.types && filters.types.length < 4 && (
-            <div className="mt-2">
-              <span className="text-sm text-blue-600 font-medium">
-                Showing: {getFilteredTypeLabel()}
-              </span>
-            </div>
-          )}
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
