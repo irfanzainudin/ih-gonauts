@@ -38,12 +38,15 @@ const ProcessSection = () => {
         </div>
 
         {/* Process Steps */}
-        <div className="grid md:grid-cols-3 gap-12">
-          {steps.map((step, index) => (
+        <div className="grid md:grid-cols-3 gap-12 relative">
+          {/* Connector Line - spans across all steps */}
+          <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-blue-200 z-0"></div>
+
+          {steps.map((step) => (
             <div key={step.id} className="text-center relative">
               {/* Step Number */}
               <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold relative z-10">
                   {step.id}
                 </div>
               </div>
@@ -60,14 +63,6 @@ const ProcessSection = () => {
               <p className="text-gray-600 leading-relaxed">
                 {step.description}
               </p>
-
-              {/* Connector Line (except for last item) */}
-              {index < steps.length - 1 && (
-                <div
-                  className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-blue-200 z-0"
-                  style={{ transform: "translateX(50%)" }}
-                ></div>
-              )}
             </div>
           ))}
         </div>

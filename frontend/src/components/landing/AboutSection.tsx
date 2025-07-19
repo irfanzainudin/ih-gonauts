@@ -85,7 +85,7 @@ const AboutSection = () => {
                 className="bg-white p-8 rounded-lg border shadow-sm"
               >
                 <div className="flex items-center space-x-6">
-                  <div className="text-4xl lg:text-5xl font-bold text-blue-600">
+                  <div className="text-4xl lg:text-5xl font-bold text-blue-600 w-32 flex-shrink-0 flex items-center justify-start">
                     {stat.percentage}
                   </div>
                   <div className="flex-1">

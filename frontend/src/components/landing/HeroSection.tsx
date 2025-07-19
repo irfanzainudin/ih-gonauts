@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
 import { Input } from "../shared/ui/input";
 import { Label } from "../shared/ui/label";
+
 import {
   Select,
   SelectContent,
@@ -12,13 +13,6 @@ import {
 
 const HeroSection = () => {
   const navigate = useNavigate();
-
-  const trustLogos = [
-    "Sport Centers",
-    "Coworking Hubs",
-    "Meeting Rooms",
-    "Event Venues",
-  ];
 
   return (
     <section id="home" className="bg-white py-20 px-4 sm:px-6 lg:px-8">
@@ -133,23 +127,6 @@ const HeroSection = () => {
               <span>🎟️</span>
               <span>Events</span>
             </Button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="pt-8">
-            <p className="text-sm text-gray-500 mb-4">
-              TRUSTED BY LEADING SPACES ACROSS MALAYSIA
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-6 opacity-60">
-              {trustLogos.map((logo, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-blue-500 rounded"></div>
-                  <span className="text-sm font-medium text-gray-600">
-                    {logo}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

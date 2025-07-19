@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "../components/shared/ui/button";
 import {
   Card,
@@ -7,9 +8,68 @@ import {
   CardTitle,
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
+import Footer from "../components/landing/Footer";
 
 const OwnerLandingPage = () => {
   const navigate = useNavigate();
+  const [animatedStats, setAnimatedStats] = useState<(number | string)[]>([
+    0, 0, 0, 0,
+  ]);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  // Animation hook for counting up
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Start animation when stats section comes into view
+            const targetValues = [35, 90, 100, 0]; // 24/7 will be handled separately
+            const duration = 1000; // 1 second
+            const steps = 30;
+            const stepDuration = duration / steps;
+
+            let currentStep = 0;
+            const interval = setInterval(() => {
+              currentStep++;
+              const progress = currentStep / steps;
+
+              setAnimatedStats(
+                targetValues.map((target, index) => {
+                  if (index === 3) {
+                    // Cool animation for "24/7" - show random numbers then settle to 24/7
+                    if (progress < 0.9) {
+                      // Show random numbers during animation
+                      const randomHours = Math.floor(Math.random() * 24) + 1;
+                      const randomMinutes = Math.floor(Math.random() * 7) + 1;
+                      return `${randomHours}/${randomMinutes}`;
+                    } else {
+                      // Final value
+                      return "24/7";
+                    }
+                  }
+                  return Math.floor(target * progress);
+                })
+              );
+
+              if (currentStep >= steps) {
+                clearInterval(interval);
+              }
+            }, stepDuration);
+
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const ownerBenefits = [
     {
@@ -88,13 +148,15 @@ const OwnerLandingPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50" ref={statsRef}>
         <div className="mx-auto max-w-7xl">
           <div className="grid md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl font-bold text-purple-600 mb-2">
-                  {stat.number}
+                  {typeof animatedStats[index] === "number"
+                    ? `${animatedStats[index]}%`
+                    : animatedStats[index]}
                 </div>
                 <div className="text-gray-600">{stat.label}</div>
               </div>
@@ -200,15 +262,8 @@ const OwnerLandingPage = () => {
         </div>
       </section>
 
-      {/* Back to User Site */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 border-t">
-        <div className="mx-auto max-w-7xl text-center">
-          <p className="text-gray-600 mb-4">Looking to book a space instead?</p>
-          <Button variant="outline" onClick={() => navigate("/")}>
-            Browse Available Spaces
-          </Button>
-        </div>
-      </section>
+      {/* Footer */}
+      <Footer showUserCTA={false} />
     </div>
   );
 };

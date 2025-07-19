@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
 import { Separator } from "../shared/ui/separator";
 
-const Footer = () => {
+interface FooterProps {
+  showUserCTA?: boolean;
+}
+
+const Footer = ({ showUserCTA = true }: FooterProps) => {
   const navigate = useNavigate();
 
   const footerLinks = {
@@ -42,28 +46,30 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-white">
-      {/* Final CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Access Your Space?
-          </h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who trust SharedSpace.my for secure,
-            blockchain-powered space access. Start booking and earning IOTA
-            rewards today!
-          </p>
-          <Button
-            size="lg"
-            className="bg-white text-blue-600 hover:bg-blue-50 px-8"
-            tabIndex={0}
-            aria-label="Start Booking Spaces"
-            onClick={() => navigate("/booking")}
-          >
-            Start Booking
-          </Button>
+      {/* Final CTA Section - Only show for users */}
+      {showUserCTA && (
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              Ready to Access Your Space?
+            </h2>
+            <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+              Join thousands of users who trust SharedSpace.my for secure,
+              blockchain-powered space access. Start booking and earning IOTA
+              rewards today!
+            </p>
+            <Button
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-blue-50 px-8"
+              tabIndex={0}
+              aria-label="Start Booking Spaces"
+              onClick={() => navigate("/booking")}
+            >
+              Start Booking
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Footer Content */}
       <div className="py-16 px-4 sm:px-6 lg:px-8">
