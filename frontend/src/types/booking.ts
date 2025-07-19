@@ -65,3 +65,37 @@ export interface BookingFilters {
   capacity?: number;
   amenities?: string[];
 }
+
+// Loyalty System Types
+export interface LoyaltyTier {
+  id: string;
+  name: string;
+  minBookings: number;
+  rewardTokens: number;
+  discountPercentage: number;
+  color: string;
+  icon: string;
+}
+
+export interface LoyaltyProgress {
+  currentBookings: number;
+  currentTier: LoyaltyTier;
+  nextTier?: LoyaltyTier;
+  progressToNextTier: number;
+  totalRewardTokens: number;
+  availableRewardTokens: number;
+  usedRewardTokens: number;
+}
+
+export interface BookingHistory {
+  id: string;
+  spaceName: string;
+  date: string;
+  time: string;
+  status: PaymentStatus;
+  amount: string;
+  paymentMethod: PaymentMethod;
+  loyaltyTokensEarned: number;
+  loyaltyTokensUsed: number;
+  createdAt: string;
+}

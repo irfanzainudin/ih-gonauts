@@ -28,6 +28,8 @@ import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
 import StripePaymentModal from "../components/shared/ui/stripe-payment-modal";
 import { useWallets, useConnectWallet } from "@iota/dapp-kit";
 import { toast } from "sonner";
+import { mockBookingHistory } from "../lib/loyaltyService";
+import { calculateLoyaltyProgress } from "../lib/loyaltyService";
 
 const SpaceDetailPage = () => {
   const { spaceId } = useParams<{ spaceId: string }>();
@@ -77,6 +79,11 @@ const SpaceDetailPage = () => {
     const duration = selectedTimeSlots.length;
     return { totalPrice, duration };
   }, [selectedTimeSlots]);
+
+  // Calculate loyalty progress
+  const loyaltyProgress = useMemo(() => {
+    return calculateLoyaltyProgress(mockBookingHistory);
+  }, []);
 
   const handleTimeSlotToggle = (slot: TimeSlot) => {
     setSelectedTimeSlots((prev) => {
@@ -419,6 +426,25 @@ const SpaceDetailPage = () => {
                         <span className="text-xl font-bold text-blue-600">
                           RM{bookingSummary.totalPrice}
                         </span>
+                      </div>
+                    </div>
+
+                    {/* Loyalty Rewards */}
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-3 rounded-lg border border-purple-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">🥇</span>
+                          <span className="font-medium text-purple-700">
+                            {loyaltyProgress.currentTier.name} Member
+                          </span>
+                        </div>
+                        <span className="text-sm text-purple-600 font-medium">
+                          {loyaltyProgress.currentTier.discountPercentage}% off
+                        </span>
+                      </div>
+                      <div className="text-sm text-purple-600">
+                        Earn {loyaltyProgress.currentTier.rewardTokens} IOTA
+                        tokens with this booking
                       </div>
                     </div>
 

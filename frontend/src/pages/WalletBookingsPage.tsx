@@ -7,32 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/shared/ui/card";
-import { ArrowLeft, Calendar, MapPin, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, Trophy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LoyaltyDashboard from "@/components/wallet/LoyaltyDashboard";
+import { mockBookingHistory } from "@/lib/loyaltyService";
+import type { BookingHistory } from "@/types/booking";
 
 const WalletBookingsPage = () => {
   const currentAccount = useCurrentAccount();
   const navigate = useNavigate();
 
-  // Mock bookings data - in a real app, this would come from your backend
-  const mockBookings = [
-    {
-      id: "1",
-      spaceName: "Cozy Coffee Shop",
-      date: "2024-01-15",
-      time: "09:00 - 12:00",
-      status: "confirmed",
-      amount: "50 MIOTA",
-    },
-    {
-      id: "2",
-      spaceName: "Modern Coworking Space",
-      date: "2024-01-20",
-      time: "14:00 - 18:00",
-      status: "pending",
-      amount: "75 MIOTA",
-    },
-  ];
+  // Use the mock booking history from loyalty service
+  const bookings: BookingHistory[] = mockBookingHistory;
 
   if (!currentAccount) {
     return (
@@ -52,7 +38,7 @@ const WalletBookingsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
@@ -66,7 +52,9 @@ const WalletBookingsPage = () => {
               <span>Back</span>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                My Wallet Dashboard
+              </h1>
               <p className="text-gray-600">
                 Bookings for wallet: {currentAccount.address.slice(0, 8)}...
                 {currentAccount.address.slice(-8)}
@@ -75,77 +63,82 @@ const WalletBookingsPage = () => {
           </div>
         </div>
 
-        {/* Bookings List */}
-        <div className="space-y-4">
-          {mockBookings.length === 0 ? (
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column - Loyalty Dashboard */}
+          <div className="lg:col-span-2">
+            <LoyaltyDashboard bookings={bookings} />
+          </div>
+
+          {/* Right Column - Recent Bookings */}
+          <div className="lg:col-span-1">
             <Card>
-              <CardContent className="p-8 text-center">
-                <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  No Bookings Found
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  You haven't made any bookings yet.
-                </p>
-                <Button onClick={() => navigate("/booking")}>
-                  Browse Spaces
-                </Button>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  Recent Bookings
+                </CardTitle>
+                <CardDescription>Your latest booking activity</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {bookings.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      No Bookings Found
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      You haven't made any bookings yet.
+                    </p>
+                    <Button onClick={() => navigate("/booking")}>
+                      Browse Spaces
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {bookings
+                      .filter((booking) => booking.status === "completed")
+                      .slice(0, 5)
+                      .map((booking) => (
+                        <div
+                          key={booking.id}
+                          className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="font-medium text-sm">
+                              {booking.spaceName}
+                            </div>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                booking.status === "completed"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {booking.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-xs text-gray-600 mb-2">
+                            <MapPin className="w-3 h-3" />
+                            <span>{booking.date}</span>
+                            <Clock className="w-3 h-3" />
+                            <span>{booking.time}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-900">
+                              {booking.amount}
+                            </span>
+                            <div className="flex items-center gap-1 text-green-600 text-xs">
+                              <Trophy className="w-3 h-3" />+
+                              {booking.loyaltyTokensEarned}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
-          ) : (
-            mockBookings.map((booking) => (
-              <Card
-                key={booking.id}
-                className="hover:shadow-md transition-shadow"
-              >
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg">
-                        {booking.spaceName}
-                      </CardTitle>
-                      <CardDescription className="flex items-center space-x-2 mt-2">
-                        <MapPin className="w-4 h-4" />
-                        <span>Location details</span>
-                      </CardDescription>
-                    </div>
-                    <div className="text-right">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          booking.status === "confirmed"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        {booking.status}
-                      </span>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {booking.date}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {booking.time}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-sm font-medium text-gray-900">
-                        {booking.amount}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
+          </div>
         </div>
       </div>
     </div>
