@@ -1,5 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
+import { Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../shared/ui/dropdown-menu";
 
 const Topbar = () => {
   const location = useLocation();
@@ -86,10 +93,11 @@ const Topbar = () => {
             </div>
           </div>
 
-          {/* Navigation Links - Landing page only */}
-          {isLandingPage && (
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
+          {/* Desktop Navigation - Hidden on mobile */}
+          <div className="hidden xl:flex items-center space-x-8">
+            {/* Navigation Links - Landing page */}
+            {isLandingPage && (
+              <>
                 {navLinks.map((link) => (
                   <button
                     key={link.name}
@@ -101,14 +109,12 @@ const Topbar = () => {
                     {link.name}
                   </button>
                 ))}
-              </div>
-            </div>
-          )}
+              </>
+            )}
 
-          {/* Owner Navigation Links */}
-          {isOwnerPage && (
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
+            {/* Owner Navigation Links */}
+            {isOwnerPage && (
+              <>
                 {ownerNavLinks.map((link) => (
                   <button
                     key={link.name}
@@ -120,13 +126,11 @@ const Topbar = () => {
                     {link.name}
                   </button>
                 ))}
-              </div>
-            </div>
-          )}
+              </>
+            )}
 
-          {/* Back to Main Site - Only show on booking pages */}
-          {isBookingPage && (
-            <div className="hidden md:block">
+            {/* Back to Main Site */}
+            {isBookingPage && (
               <Button
                 variant="outline"
                 onClick={() => navigate("/")}
@@ -134,17 +138,17 @@ const Topbar = () => {
               >
                 ← Back to Home
               </Button>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* CTA Buttons */}
-          <div className="flex items-center space-x-4">
-            {/* User Type Switch */}
+          {/* CTA Buttons and Mobile Menu */}
+          <div className="flex items-center">
+            {/* User Type Switch - Desktop Only */}
             <Button
               variant="outline"
               size="sm"
               onClick={handleUserTypeSwitch}
-              className="hidden sm:flex"
+              className="hidden xl:flex mr-4"
             >
               {isOwnerPage ? "Book Spaces" : "List Your Space"}
             </Button>
@@ -157,8 +161,82 @@ const Topbar = () => {
               aria-label="Connect IOTA Wallet"
               onClick={handleConnectWallet}
             >
-              Connect Wallet
+              <span className="hidden sm:inline">Connect Wallet</span>
+              <span className="sm:hidden">Wallet</span>
             </Button>
+
+            {/* Mobile Menu */}
+            <div className="xl:hidden ml-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="p-2">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {/* Landing Page Mobile Menu */}
+                  {isLandingPage && (
+                    <>
+                      {navLinks.map((link) => (
+                        <DropdownMenuItem
+                          key={link.name}
+                          onClick={() => handleNavClick(link.href)}
+                          className="cursor-pointer"
+                        >
+                          {link.name}
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuItem
+                        onClick={handleUserTypeSwitch}
+                        className="cursor-pointer"
+                      >
+                        List Your Space
+                      </DropdownMenuItem>
+                    </>
+                  )}
+
+                  {/* Owner Page Mobile Menu */}
+                  {isOwnerPage && (
+                    <>
+                      {ownerNavLinks.map((link) => (
+                        <DropdownMenuItem
+                          key={link.name}
+                          onClick={() => handleNavClick(link.href)}
+                          className="cursor-pointer"
+                        >
+                          {link.name}
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuItem
+                        onClick={handleUserTypeSwitch}
+                        className="cursor-pointer"
+                      >
+                        Book Spaces
+                      </DropdownMenuItem>
+                    </>
+                  )}
+
+                  {/* Booking Page Mobile Menu */}
+                  {isBookingPage && (
+                    <>
+                      <DropdownMenuItem
+                        onClick={() => navigate("/")}
+                        className="cursor-pointer"
+                      >
+                        ← Back to Home
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={handleUserTypeSwitch}
+                        className="cursor-pointer"
+                      >
+                        List Your Space
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
       </div>
