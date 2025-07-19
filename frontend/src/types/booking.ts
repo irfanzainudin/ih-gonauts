@@ -64,6 +64,7 @@ export interface BookingFilters {
   };
   capacity?: number;
   amenities?: string[];
+  searchQuery?: string;
 }
 
 // Loyalty System Types

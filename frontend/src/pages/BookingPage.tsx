@@ -5,7 +5,7 @@ import { mockSpaces } from "../lib/mockData";
 import SpaceFilters from "../components/booking/SpaceFilters";
 import SpaceCard from "../components/booking/SpaceCard";
 import { Button } from "../components/shared/ui/button";
-import { Search } from "lucide-react";
+import { Search, Calendar } from "lucide-react";
 
 const BookingPage = () => {
   const [searchParams] = useSearchParams();
@@ -15,27 +15,41 @@ const BookingPage = () => {
   // Initialize filters based on URL parameters
   useEffect(() => {
     const typeParam = searchParams.get("type") as SpaceType;
-    if (
-      typeParam &&
-      ["sport", "meeting", "coworking", "event"].includes(typeParam)
-    ) {
-      setFilters({ types: [typeParam] });
-    } else {
-      // Default: all types selected
-      setFilters({ types: ["sport", "meeting", "coworking", "event"] });
-    }
+    const dateParam = searchParams.get("date");
+    const searchParam = searchParams.get("search");
+
+    const newFilters: BookingFilters = {
+      types:
+        typeParam &&
+        ["sport", "meeting", "coworking", "event"].includes(typeParam)
+          ? [typeParam]
+          : ["sport", "meeting", "coworking", "event"],
+      date: dateParam || undefined,
+      searchQuery: searchParam || undefined,
+    };
+
+    setFilters(newFilters);
   }, [searchParams]);
 
   // Filter spaces based on current filters
   const filteredSpaces = useMemo(() => {
     let filtered = mockSpaces;
 
+    // Filter by space type
     if (filters.types && filters.types.length > 0) {
       filtered = filtered.filter((space) =>
         filters.types!.includes(space.type)
       );
     }
 
+    // Filter by search query (name)
+    if (filters.searchQuery) {
+      filtered = filtered.filter((space) =>
+        space.name.toLowerCase().includes(filters.searchQuery!.toLowerCase())
+      );
+    }
+
+    // Filter by location
     if (filters.location) {
       filtered = filtered.filter(
         (space) =>
@@ -48,6 +62,7 @@ const BookingPage = () => {
       );
     }
 
+    // Filter by price range
     if (filters.priceRange) {
       filtered = filtered.filter(
         (space) =>
@@ -56,6 +71,7 @@ const BookingPage = () => {
       );
     }
 
+    // Filter by capacity
     if (filters.capacity) {
       filtered = filtered.filter(
         (space) => space.capacity >= filters.capacity!
@@ -89,6 +105,20 @@ const BookingPage = () => {
           <p className="text-gray-600">
             Find and reserve the perfect space for your needs across Malaysia
           </p>
+          {filters.date && (
+            <div className="mt-2 flex items-center gap-2 text-sm text-blue-600">
+              <Calendar className="w-4 h-4" />
+              <span>
+                Filtering for:{" "}
+                {new Date(filters.date).toLocaleDateString("en-MY", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
