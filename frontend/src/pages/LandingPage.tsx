@@ -1,4 +1,5 @@
 import HeroSection from "../components/landing/HeroSection";
+import PopularPlacesSection from "../components/landing/PopularPlacesSection";
 import ServicesSection from "../components/landing/ServicesSection";
 import ProcessSection from "../components/landing/ProcessSection";
 import AboutSection from "../components/landing/AboutSection";
@@ -11,6 +12,7 @@ const LandingPage = () => {
   return (
     <>
       <HeroSection />
+      <PopularPlacesSection />
       <ServicesSection />
       <ProcessSection />
       <AboutSection />
