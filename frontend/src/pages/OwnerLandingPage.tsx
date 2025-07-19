@@ -9,6 +9,7 @@ import {
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
 import Footer from "../components/landing/Footer";
+import { DollarSign, Shield, BarChart3, Zap } from "lucide-react";
 
 const OwnerLandingPage = () => {
   const navigate = useNavigate();
@@ -73,25 +74,25 @@ const OwnerLandingPage = () => {
 
   const ownerBenefits = [
     {
-      icon: "💰",
+      icon: <DollarSign className="w-8 h-8 text-blue-600" />,
       title: "Maximize Revenue",
       description:
         "Increase occupancy rates and earn more from your spaces with dynamic pricing and automated management.",
     },
     {
-      icon: "🔐",
+      icon: <Shield className="w-8 h-8 text-blue-600" />,
       title: "Secure Access Control",
       description:
         "IOTA-powered access management eliminates physical keys and provides audit trails for all entries.",
     },
     {
-      icon: "📊",
+      icon: <BarChart3 className="w-8 h-8 text-blue-600" />,
       title: "Analytics & Insights",
       description:
         "Real-time dashboards showing booking patterns, revenue metrics, and space utilization data.",
     },
     {
-      icon: "⚡",
+      icon: <Zap className="w-8 h-8 text-blue-600" />,
       title: "Automated Operations",
       description:
         "Reduce administrative overhead with automated booking confirmations, payments, and access management.",
@@ -183,7 +184,7 @@ const OwnerLandingPage = () => {
               <Card key={index} className="border-0 shadow-lg">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-3xl">{benefit.icon}</div>
+                    <div className="flex items-center">{benefit.icon}</div>
                     <CardTitle className="text-xl">{benefit.title}</CardTitle>
                   </div>
                 </CardHeader>

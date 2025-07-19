@@ -10,6 +10,16 @@ import {
   CardTitle,
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
+import {
+  Dribbble,
+  Briefcase,
+  Monitor,
+  Ticket,
+  Building2,
+  MapPin,
+  Star,
+  Search,
+} from "lucide-react";
 
 const SpaceDetailPage = () => {
   const { spaceId } = useParams<{ spaceId: string }>();
@@ -105,15 +115,15 @@ const SpaceDetailPage = () => {
   const getSpaceTypeIcon = (type: string) => {
     switch (type) {
       case "sport":
-        return "🏀";
+        return <Dribbble className="w-8 h-8 text-blue-600" />;
       case "meeting":
-        return "💼";
+        return <Briefcase className="w-8 h-8 text-blue-600" />;
       case "coworking":
-        return "💻";
+        return <Monitor className="w-8 h-8 text-blue-600" />;
       case "event":
-        return "🎟️";
+        return <Ticket className="w-8 h-8 text-blue-600" />;
       default:
-        return "🏢";
+        return <Building2 className="w-8 h-8 text-blue-600" />;
     }
   };
 
@@ -121,7 +131,9 @@ const SpaceDetailPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4">🔍</div>
+          <div className="flex justify-center mb-4">
+            <Search className="w-16 h-16 text-gray-400" />
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Space not found
           </h2>
@@ -157,12 +169,13 @@ const SpaceDetailPage = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {space.name}
                 </h1>
-                <p className="text-gray-600">
-                  📍 {space.location.address}, {space.location.city}
+                <p className="text-gray-600 flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {space.location.address}, {space.location.city}
                 </p>
                 <div className="flex items-center space-x-4 mt-2">
                   <div className="flex items-center">
-                    <span className="text-yellow-400">⭐</span>
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
                     <span className="ml-1 font-medium">{space.rating}</span>
                     <span className="ml-1 text-gray-500">
                       ({space.reviews} reviews)

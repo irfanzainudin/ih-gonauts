@@ -5,6 +5,7 @@ import { mockSpaces } from "../lib/mockData";
 import SpaceFilters from "../components/booking/SpaceFilters";
 import SpaceCard from "../components/booking/SpaceCard";
 import { Button } from "../components/shared/ui/button";
+import { Search } from "lucide-react";
 
 const BookingPage = () => {
   const [searchParams] = useSearchParams();
@@ -116,7 +117,9 @@ const BookingPage = () => {
 
             {filteredSpaces.length === 0 && (
               <div className="text-center py-12">
-                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <div className="flex justify-center mb-4">
+                  <Search className="w-16 h-16 text-gray-400" />
+                </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   No spaces found
                 </h3>

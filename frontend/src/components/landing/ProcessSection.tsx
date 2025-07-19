@@ -1,3 +1,5 @@
+import { Search, Calendar, DoorOpen } from "lucide-react";
+
 const ProcessSection = () => {
   const steps = [
     {
@@ -5,21 +7,21 @@ const ProcessSection = () => {
       title: "Find Your Space",
       description:
         "Search by location, type, and date to discover available spaces. Use filters to find exactly what you need - from badminton courts to conference rooms.",
-      icon: "🔍",
+      icon: <Search className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 2,
       title: "Book Instantly",
       description:
         "Select your preferred time slot and complete booking in seconds. Get instant confirmation with all the details you need for your visit.",
-      icon: "📅",
+      icon: <Calendar className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 3,
       title: "Access & Enjoy",
       description:
         "Arrive at your booked time and access your space using our secure digital system. No keys, no complications - just walk in and enjoy your space.",
-      icon: "🚪",
+      icon: <DoorOpen className="w-8 h-8 text-blue-600" />,
     },
   ];
 
@@ -52,7 +54,7 @@ const ProcessSection = () => {
               </div>
 
               {/* Icon */}
-              <div className="text-4xl mb-4">{step.icon}</div>
+              <div className="flex justify-center mb-4">{step.icon}</div>
 
               {/* Title */}
               <h3 className="text-xl font-semibold text-gray-900 mb-4">

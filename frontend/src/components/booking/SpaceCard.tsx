@@ -3,6 +3,15 @@ import type { Space } from "../../types/booking";
 import { Button } from "../shared/ui/button";
 import { Card, CardContent, CardHeader } from "../shared/ui/card";
 import { Badge } from "../shared/ui/badge";
+import {
+  Dribbble,
+  Briefcase,
+  Monitor,
+  Ticket,
+  Building2,
+  MapPin,
+  Star,
+} from "lucide-react";
 
 interface SpaceCardProps {
   space: Space;
@@ -15,15 +24,15 @@ const SpaceCard = ({ space }: SpaceCardProps) => {
   const getSpaceTypeIcon = (type: string) => {
     switch (type) {
       case "sport":
-        return "🏀";
+        return <Dribbble className="w-8 h-8 text-blue-600" />;
       case "meeting":
-        return "💼";
+        return <Briefcase className="w-8 h-8 text-blue-600" />;
       case "coworking":
-        return "💻";
+        return <Monitor className="w-8 h-8 text-blue-600" />;
       case "event":
-        return "🎟️";
+        return <Ticket className="w-8 h-8 text-blue-600" />;
       default:
-        return "🏢";
+        return <Building2 className="w-8 h-8 text-blue-600" />;
     }
   };
 
@@ -58,7 +67,7 @@ const SpaceCard = ({ space }: SpaceCardProps) => {
         <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100 rounded-t-lg">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className="text-4xl mb-2">
+              <div className="flex justify-center mb-2">
                 {getSpaceTypeIcon(space.type)}
               </div>
               <div className="text-sm text-gray-600">Photo coming soon</div>
@@ -77,8 +86,9 @@ const SpaceCard = ({ space }: SpaceCardProps) => {
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
               {space.name}
             </h3>
-            <p className="text-sm text-gray-600">
-              📍 {space.location.address}, {space.location.city}
+            <p className="text-sm text-gray-600 flex items-center gap-1">
+              <MapPin className="w-4 h-4" />
+              {space.location.address}, {space.location.city}
             </p>
           </div>
 
@@ -90,7 +100,7 @@ const SpaceCard = ({ space }: SpaceCardProps) => {
           {/* Rating and Reviews */}
           <div className="flex items-center space-x-2 mt-4">
             <div className="flex items-center">
-              <span className="text-yellow-400">⭐</span>
+              <Star className="w-4 h-4 text-yellow-400 fill-current" />
               <span className="text-sm font-medium text-gray-900 ml-1">
                 {space.rating}
               </span>

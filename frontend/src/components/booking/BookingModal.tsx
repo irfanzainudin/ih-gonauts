@@ -3,6 +3,7 @@ import type { Space, TimeSlot, BookingRequest } from "../../types/booking";
 import { Button } from "../shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
 import { Badge } from "../shared/ui/badge";
+import { MapPin } from "lucide-react";
 
 interface BookingModalProps {
   space: Space;
@@ -105,8 +106,9 @@ const BookingModal = ({ space, isOpen, onClose }: BookingModalProps) => {
           <div className="flex justify-between items-start">
             <div>
               <CardTitle className="text-xl">{space.name}</CardTitle>
-              <p className="text-gray-600 mt-1">
-                📍 {space.location.address}, {space.location.city}
+              <p className="text-gray-600 mt-1 flex items-center gap-1">
+                <MapPin className="w-4 h-4" />
+                {space.location.address}, {space.location.city}
               </p>
             </div>
             <Button variant="outline" onClick={onClose}>

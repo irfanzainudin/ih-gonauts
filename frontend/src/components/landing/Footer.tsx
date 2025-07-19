@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
 import { Separator } from "../shared/ui/separator";
+import { Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 
 interface FooterProps {
   showUserCTA?: boolean;
@@ -94,28 +95,28 @@ const Footer = ({ showUserCTA = true }: FooterProps) => {
                   className="text-gray-400 hover:text-white transition-colors"
                   aria-label="Facebook"
                 >
-                  <span className="text-xl">📘</span>
+                  <Facebook className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                   aria-label="Twitter"
                 >
-                  <span className="text-xl">🐦</span>
+                  <Twitter className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                   aria-label="LinkedIn"
                 >
-                  <span className="text-xl">💼</span>
+                  <Linkedin className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                   aria-label="Telegram"
                 >
-                  <span className="text-xl">📱</span>
+                  <MessageCircle className="w-5 h-5" />
                 </a>
               </div>
             </div>

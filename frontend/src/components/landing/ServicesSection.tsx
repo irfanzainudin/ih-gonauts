@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../shared/ui/card";
+import { Dribbble, Briefcase, Ticket, Trophy } from "lucide-react";
 
 const ServicesSection = () => {
   const navigate = useNavigate();
@@ -17,28 +18,28 @@ const ServicesSection = () => {
       title: "Sport Venue Booking",
       description:
         "Book badminton courts, futsal fields, basketball courts, and fitness centers. Secure access with IOTA identity verification and contactless entry systems.",
-      icon: "🏀",
+      icon: <Dribbble className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 2,
       title: "Meeting & Coworking Spaces",
       description:
         "Reserve meeting rooms, hot desks, and private offices in premium coworking spaces. Perfect for professionals and remote teams across Malaysia.",
-      icon: "💼",
+      icon: <Briefcase className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 3,
       title: "Event Access Management",
       description:
         "Streamlined access control for conferences, workshops, and private events. Blockchain-verified tickets and seamless entry management systems.",
-      icon: "🎟️",
+      icon: <Ticket className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 4,
       title: "Loyalty Rewards Program",
       description:
         "Earn IOTA tokens through our Gas Station loyalty program. Get rewarded for frequent bookings, referrals, and community engagement activities.",
-      icon: "🏆",
+      icon: <Trophy className="w-8 h-8 text-blue-600" />,
     },
   ];
 

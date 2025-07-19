@@ -2,6 +2,7 @@ import WalletConnect from "@/components/wallet/WalletConnect";
 import WalletStatus from "@/components/wallet/WalletStatus";
 import WalletTest from "@/components/wallet/WalletTest";
 import { useCurrentWallet } from "@iota/dapp-kit";
+import { CheckCircle, Info } from "lucide-react";
 
 const WalletPage = () => {
   const currentWallet = useCurrentWallet();
@@ -38,8 +39,9 @@ const WalletPage = () => {
 
         {isConnected && (
           <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
-            <h3 className="text-lg font-semibold text-green-800 mb-2">
-              ✅ Wallet Connected Successfully
+            <h3 className="text-lg font-semibold text-green-800 mb-2 flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              Wallet Connected Successfully
             </h3>
             <p className="text-green-700">
               Your IOTA wallet is now connected and ready for transactions.
@@ -48,8 +50,9 @@ const WalletPage = () => {
         )}
 
         <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="text-lg font-semibold text-blue-800 mb-2">
-            ℹ️ How to Test
+          <h3 className="text-lg font-semibold text-blue-800 mb-2 flex items-center gap-2">
+            <Info className="w-5 h-5" />
+            How to Test
           </h3>
           <div className="text-blue-700 space-y-2">
             <p>1. Install a compatible IOTA wallet (like Firefly or Bloom)</p>

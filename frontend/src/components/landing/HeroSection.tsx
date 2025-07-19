@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../shared/ui/select";
+import { Dribbble, Briefcase, Monitor, Ticket } from "lucide-react";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const HeroSection = () => {
               className="flex items-center space-x-2"
               onClick={() => navigate("/booking?type=sport")}
             >
-              <span>🏀</span>
+              <Dribbble className="w-5 h-5" />
               <span>Sport Venues</span>
             </Button>
             <Button
@@ -108,7 +109,7 @@ const HeroSection = () => {
               className="flex items-center space-x-2"
               onClick={() => navigate("/booking?type=meeting")}
             >
-              <span>💼</span>
+              <Briefcase className="w-5 h-5" />
               <span>Meeting Rooms</span>
             </Button>
             <Button
@@ -116,7 +117,7 @@ const HeroSection = () => {
               className="flex items-center space-x-2"
               onClick={() => navigate("/booking?type=coworking")}
             >
-              <span>💻</span>
+              <Monitor className="w-5 h-5" />
               <span>Coworking</span>
             </Button>
             <Button
@@ -124,7 +125,7 @@ const HeroSection = () => {
               className="flex items-center space-x-2"
               onClick={() => navigate("/booking?type=event")}
             >
-              <span>🎟️</span>
+              <Ticket className="w-5 h-5" />
               <span>Events</span>
             </Button>
           </div>

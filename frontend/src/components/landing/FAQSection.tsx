@@ -83,7 +83,7 @@ const FAQSection = () => {
           </Accordion>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-4">
             Need more information about IOTA integration or platform features?
@@ -95,7 +95,7 @@ const FAQSection = () => {
             <span>•</span>
             <span>📱 WhatsApp support</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

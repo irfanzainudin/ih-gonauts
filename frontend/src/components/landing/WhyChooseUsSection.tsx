@@ -1,4 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
+import {
+  Zap,
+  Shield,
+  Gift,
+  MessageCircle,
+  DollarSign,
+  Building2,
+} from "lucide-react";
 
 const WhyChooseUsSection = () => {
   const benefits = [
@@ -6,42 +14,42 @@ const WhyChooseUsSection = () => {
       title: "Instant Booking",
       description:
         "Book spaces in real-time with instant confirmation. No waiting, no hassle.",
-      icon: "⚡",
+      icon: <Zap className="w-8 h-8 text-blue-600" />,
       highlight: "Book in seconds",
     },
     {
       title: "Secure Access",
       description:
         "Advanced digital access control means no physical keys or complicated check-ins.",
-      icon: "🔐",
+      icon: <Shield className="w-8 h-8 text-blue-600" />,
       highlight: "Contactless entry",
     },
     {
       title: "Earn Rewards",
       description:
         "Get loyalty points for every booking that you can use for discounts and perks.",
-      icon: "🎁",
+      icon: <Gift className="w-8 h-8 text-blue-600" />,
       highlight: "Every booking rewarded",
     },
     {
       title: "24/7 Support",
       description:
         "Round-the-clock customer support and automated assistance for any issues.",
-      icon: "💬",
+      icon: <MessageCircle className="w-8 h-8 text-blue-600" />,
       highlight: "Always here to help",
     },
     {
       title: "Best Prices",
       description:
         "Competitive pricing with transparent fees. No hidden costs or surprise charges.",
-      icon: "💰",
+      icon: <DollarSign className="w-8 h-8 text-blue-600" />,
       highlight: "Fair & transparent",
     },
     {
       title: "Wide Selection",
       description:
         "From sports courts to meeting rooms - find exactly what you need across Malaysia.",
-      icon: "🏢",
+      icon: <Building2 className="w-8 h-8 text-blue-600" />,
       highlight: "Every space type",
     },
   ];
@@ -68,7 +76,7 @@ const WhyChooseUsSection = () => {
               className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow duration-300 text-center"
             >
               <CardHeader className="pb-4">
-                <div className="text-4xl mb-4">{benefit.icon}</div>
+                <div className="flex justify-center mb-4">{benefit.icon}</div>
                 <CardTitle className="text-xl font-semibold text-gray-900">
                   {benefit.title}
                 </CardTitle>

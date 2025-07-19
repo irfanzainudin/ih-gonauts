@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../shared/ui/select";
+import { Dribbble, Briefcase, Monitor, Ticket } from "lucide-react";
 
 interface SpaceFiltersProps {
   filters: BookingFilters;
@@ -19,11 +20,31 @@ interface SpaceFiltersProps {
 }
 
 const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
-  const spaceTypes: { value: SpaceType; label: string; icon: string }[] = [
-    { value: "sport", label: "Sport Venues", icon: "🏀" },
-    { value: "meeting", label: "Meeting Rooms", icon: "💼" },
-    { value: "coworking", label: "Coworking", icon: "💻" },
-    { value: "event", label: "Event Halls", icon: "🎟️" },
+  const spaceTypes: {
+    value: SpaceType;
+    label: string;
+    icon: React.ReactNode;
+  }[] = [
+    {
+      value: "sport",
+      label: "Sport Venues",
+      icon: <Dribbble className="w-5 h-5" />,
+    },
+    {
+      value: "meeting",
+      label: "Meeting Rooms",
+      icon: <Briefcase className="w-5 h-5" />,
+    },
+    {
+      value: "coworking",
+      label: "Coworking",
+      icon: <Monitor className="w-5 h-5" />,
+    },
+    {
+      value: "event",
+      label: "Event Halls",
+      icon: <Ticket className="w-5 h-5" />,
+    },
   ];
 
   // Initialize with all types selected if no filters are provided

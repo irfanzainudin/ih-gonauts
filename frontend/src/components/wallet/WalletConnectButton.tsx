@@ -110,8 +110,8 @@ const WalletConnectButton = () => {
           >
             <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
               {/* IOTA Logo */}
-              <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">I</span>
+              <div className="w-5 h-5 flex items-center justify-center">
+                <img src="/iota-logo.svg" alt="IOTA" className="w-5 h-5" />
               </div>
               {/* Desktop: Show truncated address, Mobile: Show wallet icon */}
               <span className="font-mono text-sm hidden sm:inline">
@@ -128,8 +128,12 @@ const WalletConnectButton = () => {
           {/* Wallet Info */}
           <DropdownMenuLabel className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                <span className="text-white text-sm font-bold">I</span>
+              <div className="w-8 h-8 flex items-center justify-center">
+                <img
+                  src="/iota-logo.svg"
+                  alt="IOTA"
+                  className="w-8 h-8 filter brightness-0 invert"
+                />
               </div>
               <div>
                 <p className="text-white font-medium">
@@ -144,7 +148,7 @@ const WalletConnectButton = () => {
               variant="ghost"
               size="sm"
               onClick={copyAddress}
-              className="text-gray-400 hover:text-white"
+              className="text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-md p-1"
             >
               <Copy className="w-4 h-4" />
             </Button>

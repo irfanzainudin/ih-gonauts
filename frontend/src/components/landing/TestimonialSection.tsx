@@ -1,4 +1,5 @@
 import { Card, CardContent } from "../shared/ui/card";
+import { User, Star } from "lucide-react";
 
 const TestimonialSection = () => {
   const testimonials = [
@@ -9,7 +10,7 @@ const TestimonialSection = () => {
       content:
         "Working with this team has been transformational for our business. They delivered exactly what they promised and exceeded our expectations at every turn.",
       rating: 5,
-      avatar: "👩‍💼",
+      avatar: <User className="w-8 h-8 text-gray-600" />,
     },
     {
       id: 2,
@@ -18,7 +19,7 @@ const TestimonialSection = () => {
       content:
         "The level of professionalism and expertise demonstrated throughout our project was outstanding. I would recommend them to any business looking for real results.",
       rating: 5,
-      avatar: "👨‍💼",
+      avatar: <User className="w-8 h-8 text-gray-600" />,
     },
     {
       id: 3,
@@ -27,7 +28,7 @@ const TestimonialSection = () => {
       content:
         "From start to finish, the communication was transparent and the delivery was flawless. They truly understand what it takes to build a successful solution.",
       rating: 5,
-      avatar: "👩‍🚀",
+      avatar: <User className="w-8 h-8 text-gray-600" />,
     },
   ];
 
@@ -103,7 +104,10 @@ const TestimonialSection = () => {
             business growth.
           </p>
           <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
-            <span>⭐ 4.9/5 rating</span>
+            <span className="flex items-center gap-1">
+              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+              4.9/5 rating
+            </span>
             <span>•</span>
             <span>500+ reviews</span>
             <span>•</span>
