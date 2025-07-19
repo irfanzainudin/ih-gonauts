@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../shared/ui/dropdown-menu";
+import WalletConnectButton from "../wallet/WalletConnectButton";
 
 const Topbar = () => {
   const location = useLocation();
@@ -50,12 +51,6 @@ const Topbar = () => {
         .getElementById(href.substring(1))
         ?.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const handleConnectWallet = () => {
-    // Always handle IOTA wallet connection regardless of page
-    console.log("Connecting IOTA wallet...");
-    alert("IOTA wallet connection will be implemented here!");
   };
 
   const handleUserTypeSwitch = () => {
@@ -154,16 +149,7 @@ const Topbar = () => {
             </Button>
 
             {/* Connect Wallet */}
-            <Button
-              size="sm"
-              className="bg-blue-600 text-white hover:bg-blue-700"
-              tabIndex={0}
-              aria-label="Connect IOTA Wallet"
-              onClick={handleConnectWallet}
-            >
-              <span className="hidden sm:inline">Connect Wallet</span>
-              <span className="sm:hidden">Wallet</span>
-            </Button>
+            <WalletConnectButton />
 
             {/* Mobile Menu */}
             <div className="xl:hidden ml-2">

@@ -1,0 +1,189 @@
+import {
+  useWallets,
+  useConnectWallet,
+  useCurrentWallet,
+  useDisconnectWallet,
+  useCurrentAccount,
+} from "@iota/dapp-kit";
+import { Button } from "@/components/shared/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/shared/ui/dropdown-menu";
+import { Copy, Wallet, LogOut, Calendar, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+const WalletConnectButton = () => {
+  const wallets = useWallets();
+  const { mutate: connect, isPending } = useConnectWallet();
+  const currentWallet = useCurrentWallet();
+  const currentAccount = useCurrentAccount();
+  const { mutate: disconnect } = useDisconnectWallet();
+  const navigate = useNavigate();
+
+  const handleConnect = () => {
+    if (wallets.length === 0) {
+      toast.error(
+        "No wallets detected. Please install a compatible IOTA wallet like Firefly or Bloom."
+      );
+      return;
+    }
+
+    // Connect to the first available wallet
+    connect(
+      { wallet: wallets[0] },
+      {
+        onSuccess: () => {
+          console.log("Connected to wallet:", wallets[0].name);
+          toast.success(`Successfully connected to ${wallets[0].name}!`);
+        },
+        onError: (error) => {
+          console.error("Failed to connect to wallet:", error);
+          toast.error(`Failed to connect wallet: ${error.message}`);
+        },
+      }
+    );
+  };
+
+  const handleDisconnect = () => {
+    disconnect(undefined, {
+      onSuccess: () => {
+        console.log("Wallet disconnected");
+        toast.success("Wallet disconnected successfully");
+      },
+      onError: (error) => {
+        console.error("Failed to disconnect wallet:", error);
+        toast.error(`Failed to disconnect wallet: ${error.message}`);
+      },
+    });
+  };
+
+  const copyAddress = () => {
+    if (currentAccount?.address) {
+      navigator.clipboard.writeText(currentAccount.address);
+      toast.success("Wallet address copied to clipboard!");
+    }
+  };
+
+  const viewBookings = () => {
+    navigate("/wallet/bookings");
+  };
+
+  const truncateAddress = (address: string) => {
+    if (address.length <= 8) return address;
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  };
+
+  const isConnected = currentWallet?.isConnected;
+
+  if (isConnected && currentAccount) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="bg-white/10 border-green-500/50 text-green-400 hover:bg-white/20"
+          >
+            <div className="flex items-center space-x-2">
+              {/* IOTA Logo */}
+              <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
+                <span className="text-white text-xs font-bold">I</span>
+              </div>
+              <span className="font-mono text-sm">
+                {truncateAddress(currentAccount.address)}
+              </span>
+            </div>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-80 bg-gray-900/95 backdrop-blur border-gray-700">
+          {/* Wallet Info */}
+          <DropdownMenuLabel className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                <span className="text-white text-sm font-bold">I</span>
+              </div>
+              <div>
+                <p className="text-white font-medium">
+                  {currentWallet?.currentWallet?.name || "IOTA Wallet"}
+                </p>
+                <p className="text-gray-400 text-sm font-mono">
+                  {truncateAddress(currentAccount.address)}
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={copyAddress}
+              className="text-gray-400 hover:text-white"
+            >
+              <Copy className="w-4 h-4" />
+            </Button>
+          </DropdownMenuLabel>
+
+          <DropdownMenuSeparator className="bg-gray-700" />
+
+          {/* Menu Options */}
+          <DropdownMenuItem
+            onClick={viewBookings}
+            className="text-gray-300 hover:text-white hover:bg-gray-800 cursor-pointer"
+          >
+            <Calendar className="w-4 h-4 mr-3" />
+            My Bookings
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {
+              // Open in explorer - you can customize this URL
+              window.open(
+                `https://explorer.iota.org/mainnet/addr/${currentAccount.address}`,
+                "_blank"
+              );
+            }}
+            className="text-gray-300 hover:text-white hover:bg-gray-800 cursor-pointer"
+          >
+            <ExternalLink className="w-4 h-4 mr-3" />
+            View in Explorer
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator className="bg-gray-700" />
+
+          <DropdownMenuItem
+            onClick={handleDisconnect}
+            className="text-red-400 hover:text-red-300 hover:bg-red-900/20 cursor-pointer"
+          >
+            <LogOut className="w-4 h-4 mr-3" />
+            Disconnect
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
+  return (
+    <Button
+      onClick={handleConnect}
+      disabled={isPending}
+      className="bg-blue-600 hover:bg-blue-700 text-white"
+    >
+      {isPending ? (
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <span>Connecting...</span>
+        </div>
+      ) : (
+        <div className="flex items-center space-x-2">
+          <Wallet className="w-4 h-4" />
+          <span>Connect Wallet</span>
+        </div>
+      )}
+    </Button>
+  );
+};
+
+export default WalletConnectButton;
