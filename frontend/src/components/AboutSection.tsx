@@ -1,65 +1,77 @@
 const AboutSection = () => {
   const stats = [
     {
-      percentage: "95%",
-      label: "Client Satisfaction",
+      percentage: "100%",
+      label: "Secure Access",
       description:
-        "of our clients report exceptional results and continued partnership with our services.",
+        "of all space access managed through IOTA Identity verification, ensuring tamper-proof digital credentials and seamless entry.",
     },
     {
-      percentage: "300%",
-      label: "Average ROI",
+      percentage: "15%",
+      label: "Average Savings",
       description:
-        "return on investment achieved by our clients within the first 6 months of implementation.",
+        "cost reduction for space owners through automated access management and reduced administrative overhead with blockchain technology.",
     },
     {
       percentage: "24/7",
-      label: "Support Available",
+      label: "IOTA Network",
       description:
-        "round-the-clock support ensuring your business never experiences downtime or delays.",
+        "round-the-clock access to spaces powered by IOTA's feeless, scalable distributed ledger technology for instant transactions.",
     },
   ];
 
   return (
-    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <section id="about" className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
           <div className="space-y-8">
             <div>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                About Company
+                About SharedSpace.my
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Show who you are and why it matters.
+                Revolutionizing shared space access through blockchain
+                innovation.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                We are a team of dedicated professionals with over a decade of
-                experience in delivering cutting-edge solutions that drive real
-                business growth. Our commitment to excellence and transparent
-                communication has earned us the trust of hundreds of satisfied
-                clients worldwide.
+                We are pioneering the future of digital access management for
+                shared spaces in Malaysia. By leveraging IOTA's distributed
+                ledger technology, we provide secure, decentralized access
+                control that eliminates traditional barriers while creating new
+                opportunities for space owners and users alike.
               </p>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-gray-900">
-                Why Choose Our Expertise?
+                Why Choose IOTA-Powered Access?
               </h3>
               <ul className="space-y-3 text-gray-600">
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
                   <span>
-                    Industry-leading expertise with proven track record
+                    Feeless transactions through IOTA network for seamless
+                    bookings
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Transparent processes and clear communication</span>
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>
+                    Decentralized identity management with maximum security
+                  </span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Dedicated support team available around the clock</span>
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>
+                    Automated loyalty rewards through IOTA Gas Station
+                  </span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>
+                    Sustainable, environmentally-friendly blockchain technology
+                  </span>
                 </li>
               </ul>
             </div>
@@ -73,7 +85,7 @@ const AboutSection = () => {
                 className="bg-white p-8 rounded-lg border shadow-sm"
               >
                 <div className="flex items-center space-x-6">
-                  <div className="text-4xl lg:text-5xl font-bold text-black">
+                  <div className="text-4xl lg:text-5xl font-bold text-blue-600">
                     {stat.percentage}
                   </div>
                   <div className="flex-1">

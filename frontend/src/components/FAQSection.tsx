@@ -9,55 +9,56 @@ const FAQSection = () => {
   const faqs = [
     {
       id: "item-1",
-      question: "How quickly can you deliver results?",
+      question: "How does the IOTA-powered access management work?",
       answer:
-        "We typically deliver initial results within 2-4 weeks, depending on the scope of your project. Our streamlined process ensures rapid implementation while maintaining the highest quality standards. Most clients see significant improvements in their metrics within the first month of partnership.",
+        "Our platform uses IOTA Identity and Wallet SDK to create secure, tamper-proof digital credentials. When you book a space, you receive a blockchain-verified access token that allows contactless entry. Your identity is verified through IOTA's distributed ledger, ensuring maximum security without compromising privacy.",
     },
     {
       id: "item-2",
-      question: "What makes your approach different from competitors?",
+      question: "What types of spaces can I book through SharedSpace.my?",
       answer:
-        "Our approach combines cutting-edge technology with personalized service. We don't believe in one-size-fits-all solutions. Every strategy is custom-built for your specific business needs, backed by data-driven insights and supported by our 24/7 dedicated team.",
+        "You can book a wide variety of spaces including sport venues (badminton courts, futsal fields, basketball courts), meeting rooms, coworking spaces, private offices, event venues, and conference facilities. We're continuously expanding our network of partner spaces across Malaysia.",
     },
     {
       id: "item-3",
-      question: "Do you provide ongoing support after project completion?",
+      question: "How does the IOTA Gas Station loyalty program work?",
       answer:
-        "Absolutely! We believe in long-term partnerships. Our support doesn't end when the project launches. We provide comprehensive post-launch support, regular performance monitoring, optimization recommendations, and are always available to help you scale and grow.",
+        "Every booking, referral, and platform engagement earns you IOTA tokens through our Gas Station integration. These tokens can be redeemed for future bookings, exclusive perks, premium space upgrades, or even transferred to your IOTA wallet. The more you use our platform, the more rewards you earn!",
     },
     {
       id: "item-4",
-      question: "What if I'm not satisfied with the results?",
+      question: "Is my personal data secure with blockchain technology?",
       answer:
-        "We stand behind our work with a 100% satisfaction guarantee. If you're not completely satisfied with our results within the first 30 days, we'll work with you to make it right or provide a full refund. Your success is our success, and we're committed to delivering exceptional value.",
+        "Absolutely! IOTA's distributed ledger technology ensures your data is encrypted and decentralized. Unlike traditional systems, your personal information isn't stored in a single vulnerable location. Your digital identity credentials are tamper-proof and you maintain full control over your data privacy.",
     },
     {
       id: "item-5",
-      question: "How transparent is your pricing structure?",
+      question: "What if I can't access a space I've booked?",
       answer:
-        "Complete transparency is core to our business model. We provide detailed, upfront pricing with no hidden fees or surprise charges. You'll know exactly what you're paying for and why. We also provide regular reports showing the ROI and value you're receiving from our services.",
+        "Our smart access system includes multiple backup verification methods. If you experience any technical issues, our 24/7 support team can remotely verify your booking and provide alternative access methods. We also offer instant refunds or rebooking options for any inconvenience.",
     },
     {
       id: "item-6",
-      question: "Can you work with businesses of any size?",
+      question:
+        "Can space owners integrate their facilities with your platform?",
       answer:
-        "Yes! We've successfully worked with startups, small businesses, and large enterprises. Our scalable solutions and flexible approach allow us to adapt to any business size and industry. Whether you're just starting out or looking to optimize an established operation, we have the expertise to help.",
+        "Yes! We welcome space owners to join our network. Our IOTA-powered access management system integrates with existing security infrastructure while providing advanced analytics, automated payment processing, and reduced administrative overhead. Contact us to learn about partnership opportunities.",
     },
   ];
 
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section id="faqs" className="bg-white py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            FAQ Section
+            Frequently Asked Questions
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Overcome hesitations before they block conversions.
+            Everything you need to know about blockchain-powered space booking.
             <span className="block mt-2">
-              Get instant answers to the most common questions about our
-              services, process, and commitment to your success.
+              Learn more about our IOTA integration, security features, and how
+              to maximize your rewards through our platform.
             </span>
           </p>
         </div>
@@ -71,7 +72,7 @@ const FAQSection = () => {
                 value={faq.id}
                 className="bg-white rounded-lg border shadow-sm"
               >
-                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 hover:text-black [&[data-state=open]>svg]:rotate-180">
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 hover:text-blue-600 [&[data-state=open]>svg]:rotate-180">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4 text-gray-600 leading-relaxed">
@@ -85,14 +86,14 @@ const FAQSection = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-4">
-            Still have questions? We're here to help.
+            Need more information about IOTA integration or platform features?
           </p>
           <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-            <span>📧 support@company.com</span>
-            <span>•</span>
-            <span>📞 (555) 123-4567</span>
+            <span>📧 support@sharedspace.my</span>
             <span>•</span>
             <span>💬 Live chat available</span>
+            <span>•</span>
+            <span>📱 WhatsApp support</span>
           </div>
         </div>
       </div>

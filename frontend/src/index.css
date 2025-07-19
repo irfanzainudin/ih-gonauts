@@ -41,6 +41,16 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Offset for sections to account for fixed navbar */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

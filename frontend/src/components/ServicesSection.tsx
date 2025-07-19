@@ -11,47 +11,47 @@ const ServicesSection = () => {
   const services = [
     {
       id: 1,
-      title: "Service 1",
+      title: "Sport Venue Booking",
       description:
-        "Comprehensive solution designed to streamline your workflow and enhance productivity with cutting-edge technology.",
-      icon: "📊",
+        "Book badminton courts, futsal fields, basketball courts, and fitness centers. Secure access with IOTA identity verification and contactless entry systems.",
+      icon: "🏀",
     },
     {
       id: 2,
-      title: "Service 2",
+      title: "Meeting & Coworking Spaces",
       description:
-        "Advanced analytics and reporting tools that provide deep insights into your business performance and growth opportunities.",
-      icon: "🚀",
+        "Reserve meeting rooms, hot desks, and private offices in premium coworking spaces. Perfect for professionals and remote teams across Malaysia.",
+      icon: "💼",
     },
     {
       id: 3,
-      title: "Service 3",
+      title: "Event Access Management",
       description:
-        "Expert consultation services with personalized strategies tailored to meet your specific business needs and objectives.",
-      icon: "💡",
+        "Streamlined access control for conferences, workshops, and private events. Blockchain-verified tickets and seamless entry management systems.",
+      icon: "🎟️",
     },
     {
       id: 4,
-      title: "Service 4",
+      title: "Loyalty Rewards Program",
       description:
-        "24/7 support and maintenance services ensuring your systems run smoothly with minimal downtime and maximum efficiency.",
-      icon: "🛠️",
+        "Earn IOTA tokens through our Gas Station loyalty program. Get rewarded for frequent bookings, referrals, and community engagement activities.",
+      icon: "🏆",
     },
   ];
 
   return (
-    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <section id="spaces" className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Services Section
+            Comprehensive Space Solutions
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Present what you offer - simply and directly.
+            From sports to business, we've got your space booking needs covered.
             <span className="block mt-2">
-              We are here with clarity and transparency that helps customers
-              understand our offerings with more ease.
+              Secure access management powered by IOTA blockchain technology
+              with integrated loyalty rewards for every booking.
             </span>
           </p>
         </div>
@@ -83,9 +83,9 @@ const ServicesSection = () => {
                   variant="outline"
                   className="w-full"
                   tabIndex={0}
-                  aria-label={`Learn more about ${service.title}`}
+                  aria-label={`Explore ${service.title} options`}
                 >
-                  Learn More
+                  Explore Options
                 </Button>
               </CardFooter>
             </Card>

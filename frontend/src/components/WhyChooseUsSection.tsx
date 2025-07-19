@@ -25,7 +25,7 @@ const WhyChooseUsSection = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <section id="benefits" className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-16">

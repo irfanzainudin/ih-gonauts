@@ -3,22 +3,22 @@ import { Separator } from "@/components/ui/separator";
 
 const Footer = () => {
   const footerLinks = {
-    company: [
-      { name: "About", href: "#" },
-      { name: "Careers", href: "#" },
-      { name: "Press", href: "#" },
-      { name: "Blog", href: "#" },
+    platform: [
+      { name: "Browse Spaces", href: "#" },
+      { name: "List Your Space", href: "#" },
+      { name: "Rewards Program", href: "#" },
+      { name: "IOTA Integration", href: "#" },
     ],
-    product: [
-      { name: "Features", href: "#" },
-      { name: "Pricing", href: "#" },
-      { name: "API", href: "#" },
-      { name: "Documentation", href: "#" },
+    spaces: [
+      { name: "Sport Venues", href: "#" },
+      { name: "Coworking Spaces", href: "#" },
+      { name: "Meeting Rooms", href: "#" },
+      { name: "Event Venues", href: "#" },
     ],
     support: [
       { name: "Help Center", href: "#" },
-      { name: "Contact", href: "#" },
-      { name: "Status", href: "#" },
+      { name: "Contact Us", href: "#" },
+      { name: "Access Issues", href: "#" },
       { name: "Terms & Conditions", href: "#" },
     ],
   };
@@ -26,21 +26,28 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       {/* Final CTA Section */}
-      <div className="bg-black py-16 px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">CTA Heading</h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Close with confidence. Ready to transform your business with our
-            proven solutions? Join hundreds of satisfied customers who trust us
-            with their growth.
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            Ready to Access Your Space?
+          </h2>
+          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of users who trust SharedSpace.my for secure,
+            blockchain-powered space access. Start booking and earning IOTA
+            rewards today!
           </p>
           <Button
             size="lg"
-            className="bg-white text-black hover:bg-gray-100 px-8"
+            className="bg-white text-blue-600 hover:bg-blue-50 px-8"
             tabIndex={0}
-            aria-label="Get Started Now"
+            aria-label="Start Booking Spaces"
+            onClick={() =>
+              document
+                .getElementById("spaces")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
           >
-            Get Started
+            Start Booking
           </Button>
         </div>
       </div>
@@ -52,13 +59,15 @@ const Footer = () => {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-2 mb-6">
-                <div className="h-8 w-8 rounded-full bg-white"></div>
-                <span className="text-xl font-bold">Company</span>
+                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">S</span>
+                </div>
+                <span className="text-xl font-bold">SharedSpace.my</span>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6">
-                Building exceptional solutions that drive real business growth.
-                Your success is our mission, and we're committed to delivering
-                results that exceed expectations.
+                Revolutionizing shared space access through IOTA blockchain
+                technology. Secure, decentralized, and rewarding space booking
+                for the digital age.
               </p>
               <div className="flex space-x-4">
                 <a
@@ -85,9 +94,9 @@ const Footer = () => {
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
-                  aria-label="Instagram"
+                  aria-label="Telegram"
                 >
-                  <span className="text-xl">📷</span>
+                  <span className="text-xl">📱</span>
                 </a>
               </div>
             </div>
@@ -95,11 +104,11 @@ const Footer = () => {
             {/* Footer Links */}
             <div className="lg:col-span-3">
               <div className="grid md:grid-cols-3 gap-8">
-                {/* Company Links */}
+                {/* Platform Links */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Company</h3>
+                  <h3 className="text-lg font-semibold mb-4">Platform</h3>
                   <ul className="space-y-3">
-                    {footerLinks.company.map((link) => (
+                    {footerLinks.platform.map((link) => (
                       <li key={link.name}>
                         <a
                           href={link.href}
@@ -114,11 +123,11 @@ const Footer = () => {
                   </ul>
                 </div>
 
-                {/* Product Links */}
+                {/* Spaces Links */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Product</h3>
+                  <h3 className="text-lg font-semibold mb-4">Spaces</h3>
                   <ul className="space-y-3">
-                    {footerLinks.product.map((link) => (
+                    {footerLinks.spaces.map((link) => (
                       <li key={link.name}>
                         <a
                           href={link.href}
@@ -164,7 +173,8 @@ const Footer = () => {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © 2024 Company Name. All rights reserved.
+              © 2024 SharedSpace.my. Built with IOTA technology. All rights
+              reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">
@@ -174,7 +184,7 @@ const Footer = () => {
                 Terms of Service
               </a>
               <a href="#" className="hover:text-white transition-colors">
-                Cookie Policy
+                IOTA Security
               </a>
             </div>
           </div>
