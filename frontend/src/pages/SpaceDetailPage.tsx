@@ -19,9 +19,12 @@ import {
   MapPin,
   Star,
   Search,
+  Wallet,
+  CreditCard,
 } from "lucide-react";
 import { useWalletConnection } from "../hooks/useWalletConnection";
 import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
+import StripePaymentModal from "../components/shared/ui/stripe-payment-modal";
 import { useWallets, useConnectWallet } from "@iota/dapp-kit";
 import { toast } from "sonner";
 
@@ -30,6 +33,7 @@ const SpaceDetailPage = () => {
   const navigate = useNavigate();
   const { isConnected } = useWalletConnection();
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showStripeModal, setShowStripeModal] = useState(false);
   const wallets = useWallets();
   const { mutate: connect, isPending } = useConnectWallet();
 
@@ -86,15 +90,12 @@ const SpaceDetailPage = () => {
     });
   };
 
-  const handleBooking = async () => {
-    if (selectedTimeSlots.length === 0 || !space) return;
+  const createBookingRequest = (): BookingRequest => {
+    if (!space) throw new Error("Space not found");
+    if (selectedTimeSlots.length === 0)
+      throw new Error("No time slots selected");
 
-    if (!isConnected) {
-      setShowWalletModal(true);
-      return;
-    }
-
-    const bookingRequest: BookingRequest = {
+    return {
       spaceId: space.id,
       date: selectedDate,
       startTime: selectedTimeSlots[0].startTime,
@@ -102,12 +103,61 @@ const SpaceDetailPage = () => {
       duration: bookingSummary.duration,
       totalPrice: bookingSummary.totalPrice,
     };
+  };
 
-    console.log("Booking request:", bookingRequest);
-    alert(
-      `Booking confirmed for ${space.name}! Total: RM${bookingSummary.totalPrice}`
-    );
-    navigate("/booking");
+  const handleIotaWalletBooking = async () => {
+    if (selectedTimeSlots.length === 0 || !space) return;
+
+    if (!isConnected) {
+      setShowWalletModal(true);
+      return;
+    }
+
+    try {
+      const bookingRequest = createBookingRequest();
+      bookingRequest.paymentMethod = "iota_wallet";
+      bookingRequest.paymentStatus = "pending";
+
+      console.log("IOTA Wallet booking request:", bookingRequest);
+
+      // Here you would integrate with IOTA smart contract
+      // For now, we'll simulate the transaction
+      await simulateIotaTransaction(bookingRequest);
+
+      toast.success(
+        `Booking confirmed for ${space.name}! Total: RM${bookingSummary.totalPrice}`
+      );
+      navigate("/booking");
+    } catch {
+      toast.error("Failed to process IOTA wallet payment");
+    }
+  };
+
+  const handleStripeBooking = () => {
+    if (selectedTimeSlots.length === 0 || !space) {
+      toast.error("Please select time slots before proceeding with payment");
+      return;
+    }
+
+    setShowStripeModal(true);
+  };
+
+  const handleStripePaymentError = (error: string) => {
+    toast.error(`Payment failed: ${error}`);
+  };
+
+  // Simulate IOTA transaction
+  const simulateIotaTransaction = async (bookingRequest: BookingRequest) => {
+    // Simulate network delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // In a real implementation, this would:
+    // 1. Sign the transaction with the connected wallet
+    // 2. Submit to IOTA network
+    // 3. Wait for confirmation
+    // 4. Update booking status
+
+    console.log("IOTA transaction simulated:", bookingRequest);
   };
 
   const handleConnectWallet = () => {
@@ -371,12 +421,24 @@ const SpaceDetailPage = () => {
                       </div>
                     </div>
 
-                    <Button
-                      onClick={handleBooking}
-                      className="w-full bg-blue-600 hover:bg-blue-700"
-                    >
-                      Book with IOTA Wallet
-                    </Button>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={handleIotaWalletBooking}
+                        className="w-full bg-purple-600 hover:bg-purple-700"
+                      >
+                        <Wallet className="w-4 h-4 mr-2" />
+                        Book with IOTA Wallet
+                      </Button>
+
+                      <Button
+                        onClick={handleStripeBooking}
+                        variant="outline"
+                        className="w-full border-green-600 text-green-600 hover:bg-green-50"
+                      >
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Pay with MYR
+                      </Button>
+                    </div>
                   </>
                 ) : (
                   <div className="text-center text-gray-500 py-8">
@@ -395,6 +457,15 @@ const SpaceDetailPage = () => {
         onConnectWallet={handleConnectWallet}
         isConnecting={isPending}
       />
+
+      {showStripeModal && selectedTimeSlots.length > 0 && (
+        <StripePaymentModal
+          isOpen={showStripeModal}
+          onClose={() => setShowStripeModal(false)}
+          bookingRequest={createBookingRequest()}
+          onPaymentError={handleStripePaymentError}
+        />
+      )}
     </div>
   );
 };

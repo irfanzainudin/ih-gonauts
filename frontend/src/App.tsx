@@ -4,6 +4,8 @@ import Topbar from "@/components/landing/Topbar";
 import LandingPage from "./pages/LandingPage";
 import BookingPage from "./pages/BookingPage";
 import SpaceDetailPage from "./pages/SpaceDetailPage";
+import BookingSuccessPage from "./pages/BookingSuccessPage";
+import StripeDemoPage from "./pages/StripeDemoPage";
 import OwnerLandingPage from "./pages/OwnerLandingPage";
 import WalletBookingsPage from "./pages/WalletBookingsPage";
 import WalletProvider from "@/components/wallet/WalletProvider";
@@ -11,7 +13,12 @@ import WalletProvider from "@/components/wallet/WalletProvider";
 function App() {
   return (
     <WalletProvider>
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <div className="min-h-screen bg-white">
           <Topbar />
           <main className="pt-16">
@@ -23,6 +30,8 @@ function App() {
                 path="/booking/space/:spaceId"
                 element={<SpaceDetailPage />}
               />
+              <Route path="/booking/success" element={<BookingSuccessPage />} />
+              <Route path="/stripe-demo" element={<StripeDemoPage />} />
               <Route path="/wallet/bookings" element={<WalletBookingsPage />} />
 
               {/* Owner Routes */}

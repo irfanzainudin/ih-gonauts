@@ -1,5 +1,8 @@
 export type SpaceType = "sport" | "meeting" | "coworking" | "event";
 
+export type PaymentMethod = "iota_wallet" | "stripe";
+export type PaymentStatus = "pending" | "completed" | "failed" | "cancelled";
+
 export interface Space {
   id: string;
   name: string;
@@ -39,6 +42,16 @@ export interface BookingRequest {
   duration: number;
   totalPrice: number;
   userWallet?: string;
+  paymentMethod?: PaymentMethod;
+  paymentStatus?: PaymentStatus;
+  stripePaymentIntentId?: string;
+}
+
+export interface StripePaymentData {
+  paymentIntentId: string;
+  clientSecret: string;
+  amount: number;
+  currency: string;
 }
 
 export interface BookingFilters {
