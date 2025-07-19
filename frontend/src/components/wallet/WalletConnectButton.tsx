@@ -14,8 +14,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/shared/ui/dropdown-menu";
-import { Copy, Wallet, LogOut, Calendar, ExternalLink } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {
+  Copy,
+  Wallet,
+  LogOut,
+  Calendar,
+  ExternalLink,
+  Home,
+  Building,
+} from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 const WalletConnectButton = () => {
@@ -25,6 +33,9 @@ const WalletConnectButton = () => {
   const currentAccount = useCurrentAccount();
   const { mutate: disconnect } = useDisconnectWallet();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isOwnerPage = location.pathname.startsWith("/owner");
 
   const handleConnect = () => {
     if (wallets.length === 0) {
@@ -74,6 +85,14 @@ const WalletConnectButton = () => {
     navigate("/wallet/bookings");
   };
 
+  const handleUserTypeSwitch = () => {
+    if (isOwnerPage) {
+      navigate("/"); // Go to user landing page
+    } else {
+      navigate("/owner"); // Go to owner landing page
+    }
+  };
+
   const truncateAddress = (address: string) => {
     if (address.length <= 8) return address;
     return `${address.slice(0, 4)}...${address.slice(-4)}`;
@@ -87,20 +106,25 @@ const WalletConnectButton = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
-            className="bg-white/10 border-green-500/50 text-green-400 hover:bg-white/20"
+            className="bg-white/10 border-green-500/50 text-green-400 hover:bg-white/20 w-10 h-10 p-0 sm:w-40 sm:h-auto sm:p-2"
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
               {/* IOTA Logo */}
               <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
                 <span className="text-white text-xs font-bold">I</span>
               </div>
-              <span className="font-mono text-sm">
+              {/* Desktop: Show truncated address, Mobile: Show wallet icon */}
+              <span className="font-mono text-sm hidden sm:inline">
                 {truncateAddress(currentAccount.address)}
               </span>
+              <Wallet className="w-4 h-4 sm:hidden" />
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-80 bg-gray-900/95 backdrop-blur border-gray-700">
+        <DropdownMenuContent
+          className="w-80 bg-gray-900/95 backdrop-blur border-gray-700"
+          align="end"
+        >
           {/* Wallet Info */}
           <DropdownMenuLabel className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
             <div className="flex items-center space-x-3">
@@ -127,6 +151,27 @@ const WalletConnectButton = () => {
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator className="bg-gray-700" />
+
+          {/* Navigation for Mobile */}
+          <div className="xl:hidden">
+            <DropdownMenuItem
+              onClick={() => navigate("/")}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 cursor-pointer"
+            >
+              <Home className="w-4 h-4 mr-3" />
+              Home
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={handleUserTypeSwitch}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 cursor-pointer"
+            >
+              <Building className="w-4 h-4 mr-3" />
+              {isOwnerPage ? "Book Spaces" : "List Your Space"}
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator className="bg-gray-700" />
+          </div>
 
           {/* Menu Options */}
           <DropdownMenuItem
@@ -169,17 +214,18 @@ const WalletConnectButton = () => {
     <Button
       onClick={handleConnect}
       disabled={isPending}
-      className="bg-blue-600 hover:bg-blue-700 text-white"
+      className="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 p-0 sm:w-40 sm:h-auto sm:p-2"
     >
       {isPending ? (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          <span>Connecting...</span>
+          <span className="hidden sm:inline">Connecting...</span>
+          <span className="sm:hidden">...</span>
         </div>
       ) : (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
           <Wallet className="w-4 h-4" />
-          <span>Connect Wallet</span>
+          <span className="hidden sm:inline">Connect Wallet</span>
         </div>
       )}
     </Button>

@@ -1,12 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
-import { Menu } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../shared/ui/dropdown-menu";
 import WalletConnectButton from "../wallet/WalletConnectButton";
 
 const Topbar = () => {
@@ -14,7 +7,6 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const isLandingPage = location.pathname === "/";
-  const isBookingPage = location.pathname.startsWith("/booking");
   const isOwnerPage = location.pathname.startsWith("/owner");
 
   const navLinks = [
@@ -123,25 +115,13 @@ const Topbar = () => {
                 ))}
               </>
             )}
-
-            {/* Back to Main Site */}
-            {isBookingPage && (
-              <Button
-                variant="outline"
-                onClick={() => navigate("/")}
-                className="mr-4"
-              >
-                ← Back to Home
-              </Button>
-            )}
           </div>
 
-          {/* CTA Buttons and Mobile Menu */}
+          {/* CTA Buttons */}
           <div className="flex items-center">
             {/* User Type Switch - Desktop Only */}
             <Button
               variant="outline"
-              size="sm"
               onClick={handleUserTypeSwitch}
               className="hidden xl:flex mr-4"
             >
@@ -150,79 +130,6 @@ const Topbar = () => {
 
             {/* Connect Wallet */}
             <WalletConnectButton />
-
-            {/* Mobile Menu */}
-            <div className="xl:hidden ml-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Open menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  {/* Landing Page Mobile Menu */}
-                  {isLandingPage && (
-                    <>
-                      {navLinks.map((link) => (
-                        <DropdownMenuItem
-                          key={link.name}
-                          onClick={() => handleNavClick(link.href)}
-                          className="cursor-pointer"
-                        >
-                          {link.name}
-                        </DropdownMenuItem>
-                      ))}
-                      <DropdownMenuItem
-                        onClick={handleUserTypeSwitch}
-                        className="cursor-pointer"
-                      >
-                        List Your Space
-                      </DropdownMenuItem>
-                    </>
-                  )}
-
-                  {/* Owner Page Mobile Menu */}
-                  {isOwnerPage && (
-                    <>
-                      {ownerNavLinks.map((link) => (
-                        <DropdownMenuItem
-                          key={link.name}
-                          onClick={() => handleNavClick(link.href)}
-                          className="cursor-pointer"
-                        >
-                          {link.name}
-                        </DropdownMenuItem>
-                      ))}
-                      <DropdownMenuItem
-                        onClick={handleUserTypeSwitch}
-                        className="cursor-pointer"
-                      >
-                        Book Spaces
-                      </DropdownMenuItem>
-                    </>
-                  )}
-
-                  {/* Booking Page Mobile Menu */}
-                  {isBookingPage && (
-                    <>
-                      <DropdownMenuItem
-                        onClick={() => navigate("/")}
-                        className="cursor-pointer"
-                      >
-                        ← Back to Home
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={handleUserTypeSwitch}
-                        className="cursor-pointer"
-                      >
-                        List Your Space
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
           </div>
         </div>
       </div>

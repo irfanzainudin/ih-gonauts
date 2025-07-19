@@ -1,12 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import type { BookingFilters, SpaceType } from "../types/booking";
 import { mockSpaces } from "../lib/mockData";
 import SpaceFilters from "../components/booking/SpaceFilters";
 import SpaceCard from "../components/booking/SpaceCard";
+import { Button } from "../components/shared/ui/button";
 
 const BookingPage = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<BookingFilters>({});
 
   // Initialize filters based on URL parameters
@@ -67,8 +69,17 @@ const BookingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <Button
+          variant="outline"
+          onClick={() => navigate("/")}
+          className="mb-6"
+        >
+          ← Back to Home
+        </Button>
+
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
