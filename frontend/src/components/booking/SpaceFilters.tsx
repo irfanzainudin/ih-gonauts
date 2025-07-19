@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import type { BookingFilters, SpaceType } from "../../types/booking";
 import { Button } from "../shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
+import { Input } from "../shared/ui/input";
+import { Label } from "../shared/ui/label";
+import { Checkbox } from "../shared/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../shared/ui/select";
 
 interface SpaceFiltersProps {
   filters: BookingFilters;
@@ -72,11 +82,9 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
                 key={type.value}
                 className="flex items-center space-x-3 cursor-pointer"
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={localFilters.types?.includes(type.value) || false}
-                  onChange={() => handleSpaceTypeToggle(type.value)}
-                  className="text-blue-600 focus:ring-blue-500 rounded"
+                  onCheckedChange={() => handleSpaceTypeToggle(type.value)}
                 />
                 <span className="text-lg">{type.icon}</span>
                 <span className="text-sm text-gray-700">{type.label}</span>
@@ -87,13 +95,18 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
 
         {/* Location Filter */}
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
-          <input
+          <Label
+            htmlFor="location-filter"
+            className="font-semibold text-gray-900 mb-3 block"
+          >
+            Location
+          </Label>
+          <Input
+            id="location-filter"
             type="text"
             placeholder="Enter city or area"
             value={localFilters.location || ""}
             onChange={(e) => handleFilterChange("location", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -104,7 +117,7 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
           </h3>
           <div className="space-y-3">
             <div className="flex space-x-2">
-              <input
+              <Input
                 type="number"
                 placeholder="Min"
                 value={localFilters.priceRange?.min || ""}
@@ -114,9 +127,8 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
                     localFilters.priceRange?.max || 1000
                   )
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <input
+              <Input
                 type="number"
                 placeholder="Max"
                 value={localFilters.priceRange?.max || ""}
@@ -126,7 +138,6 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
                     parseInt(e.target.value) || 1000
                   )
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="text-xs text-gray-500">
@@ -138,24 +149,33 @@ const SpaceFilters = ({ filters, onFiltersChange }: SpaceFiltersProps) => {
 
         {/* Capacity Filter */}
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Min Capacity</h3>
-          <select
-            value={localFilters.capacity || ""}
-            onChange={(e) =>
+          <Label
+            htmlFor="capacity-filter"
+            className="font-semibold text-gray-900 mb-3 block"
+          >
+            Min Capacity
+          </Label>
+          <Select
+            value={localFilters.capacity?.toString() || "any"}
+            onValueChange={(value) =>
               handleFilterChange(
                 "capacity",
-                parseInt(e.target.value) || undefined
+                value === "any" ? undefined : parseInt(value)
               )
             }
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Any capacity</option>
-            <option value="1">1+ people</option>
-            <option value="5">5+ people</option>
-            <option value="10">10+ people</option>
-            <option value="20">20+ people</option>
-            <option value="50">50+ people</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Any capacity" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="any">Any capacity</SelectItem>
+              <SelectItem value="1">1+ people</SelectItem>
+              <SelectItem value="5">5+ people</SelectItem>
+              <SelectItem value="10">10+ people</SelectItem>
+              <SelectItem value="20">20+ people</SelectItem>
+              <SelectItem value="50">50+ people</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Clear Filters */}

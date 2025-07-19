@@ -2,24 +2,24 @@ const ProcessSection = () => {
   const steps = [
     {
       id: 1,
-      title: "Browse & Book",
+      title: "Find Your Space",
       description:
-        "Discover available spaces near you, compare prices and amenities, then book instantly through our intuitive platform. Filter by location, time, and specific requirements.",
+        "Search by location, type, and date to discover available spaces. Use filters to find exactly what you need - from badminton courts to conference rooms.",
       icon: "🔍",
     },
     {
       id: 2,
-      title: "Secure Access",
+      title: "Book Instantly",
       description:
-        "Get seamless, contactless access using IOTA Identity verification. Your digital identity is securely managed through our blockchain-powered access control system.",
-      icon: "🔐",
+        "Select your preferred time slot and complete booking in seconds. Get instant confirmation with all the details you need for your visit.",
+      icon: "📅",
     },
     {
       id: 3,
-      title: "Earn Rewards",
+      title: "Access & Enjoy",
       description:
-        "Automatically earn IOTA tokens through our Gas Station loyalty program. Redeem rewards for future bookings, exclusive perks, and premium space upgrades.",
-      icon: "💰",
+        "Arrive at your booked time and access your space using our secure digital system. No keys, no complications - just walk in and enjoy your space.",
+      icon: "🚪",
     },
   ];
 
@@ -29,14 +29,11 @@ const ProcessSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            How SharedSpace.my Works
+            How It Works
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Experience the future of space booking and access management.
-            <span className="block mt-2">
-              Our streamlined process combines cutting-edge IOTA technology with
-              user-friendly design for a seamless booking experience.
-            </span>
+            Booking a space has never been easier. Here's how you can find and
+            access your perfect space in just a few simple steps.
           </p>
         </div>
 
@@ -77,11 +74,13 @@ const ProcessSection = () => {
 
         {/* Bottom Message */}
         <div className="text-center mt-16">
-          <p className="text-sm text-gray-500 max-w-md mx-auto">
-            Built on IOTA's distributed ledger technology, ensuring secure,
-            decentralized access management while rewarding your continued
-            engagement with our platform.
-          </p>
+          <div className="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto">
+            <p className="text-sm text-gray-600">
+              Your booking comes with automatic loyalty rewards, secure access
+              technology, and 24/7 support - all designed to make your space
+              experience seamless and rewarding.
+            </p>
+          </div>
         </div>
       </div>
     </section>

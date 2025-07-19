@@ -1,6 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
-import { Badge } from "../shared/ui/badge";
+import { Input } from "../shared/ui/input";
+import { Label } from "../shared/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../shared/ui/select";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -15,106 +23,132 @@ const HeroSection = () => {
   return (
     <section id="home" className="bg-white py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Main Content */}
-          <div className="space-y-8">
-            {/* Badge */}
-            <Badge variant="secondary" className="w-fit">
-              Powered by IOTA Identity & Gas Station
-            </Badge>
+        <div className="text-center">
+          {/* Main Heading */}
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+            Find & Book Spaces
+            <span className="block text-blue-600">Across Malaysia</span>
+          </h1>
 
-            {/* Main Heading */}
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              Secure, Decentralized
-              <span className="block">Space Access Management</span>
-            </h1>
+          {/* Description */}
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Discover and instantly book sport venues, meeting rooms, coworking
+            spaces, and event halls. From badminton courts to conference rooms -
+            find the perfect space for your needs.
+          </p>
 
-            {/* Description */}
-            <p className="text-lg text-gray-600 max-w-lg">
-              Book sport venues, meeting rooms, and coworking spaces with
-              blockchain-powered access control. Earn loyalty rewards through
-              IOTA Gas Station while enjoying seamless, secure access to shared
-              spaces across Malaysia.
-            </p>
+          {/* Quick Search/CTA */}
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto mb-8">
+            <div className="grid md:grid-cols-4 gap-4 items-end">
+              <div className="text-left">
+                <Label
+                  htmlFor="space-type"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  What space do you need?
+                </Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Spaces" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Spaces</SelectItem>
+                    <SelectItem value="sport">Sport Venues</SelectItem>
+                    <SelectItem value="meeting">Meeting Rooms</SelectItem>
+                    <SelectItem value="coworking">Coworking Spaces</SelectItem>
+                    <SelectItem value="event">Event Halls</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="text-left">
+                <Label
+                  htmlFor="location"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Location
+                </Label>
+                <Input
+                  id="location"
+                  type="text"
+                  placeholder="Kuala Lumpur, Selangor..."
+                />
+              </div>
+
+              <div className="text-left">
+                <Label
+                  htmlFor="date"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Date
+                </Label>
+                <Input
+                  id="date"
+                  type="date"
+                  defaultValue={new Date().toISOString().split("T")[0]}
+                />
+              </div>
+
               <Button
                 size="lg"
-                className="bg-black text-white hover:bg-gray-800 px-8"
-                tabIndex={0}
-                aria-label="Start Booking Spaces"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-8"
                 onClick={() => navigate("/booking")}
               >
-                Book Now
+                Search Spaces
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8"
-                tabIndex={0}
-                aria-label="Learn About Access Management"
-                onClick={() =>
-                  document
-                    .getElementById("how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                How It Works ↗
-              </Button>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="pt-8">
-              <p className="text-sm text-gray-500 mb-4">
-                TRUSTED BY LEADING SPACES ACROSS MALAYSIA FOR SECURE ACCESS
-                MANAGEMENT
-              </p>
-              <div className="flex flex-wrap items-center gap-6 opacity-60">
-                {trustLogos.map((logo, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div className="w-6 h-6 bg-blue-500 rounded"></div>
-                    <span className="text-sm font-medium text-gray-600">
-                      {logo}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 
-          {/* Right Column - Visual/Image Placeholder */}
-          <div className="relative">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-8 border">
-              <div className="space-y-6">
-                {/* Placeholder for booking interface */}
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm">🏢</span>
-                  </div>
-                  <div>
-                    <div className="h-4 bg-blue-300 rounded w-32 mb-2"></div>
-                    <div className="h-3 bg-blue-200 rounded w-24"></div>
-                  </div>
-                </div>
+          {/* Quick Access Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={() => navigate("/booking?type=sport")}
+            >
+              <span>🏀</span>
+              <span>Sport Venues</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={() => navigate("/booking?type=meeting")}
+            >
+              <span>💼</span>
+              <span>Meeting Rooms</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={() => navigate("/booking?type=coworking")}
+            >
+              <span>💻</span>
+              <span>Coworking</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={() => navigate("/booking?type=event")}
+            >
+              <span>🎟️</span>
+              <span>Events</span>
+            </Button>
+          </div>
 
-                <div className="space-y-3">
-                  <div className="h-4 bg-purple-300 rounded"></div>
-                  <div className="h-4 bg-purple-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-purple-200 rounded w-1/2"></div>
+          {/* Trust Indicators */}
+          <div className="pt-8">
+            <p className="text-sm text-gray-500 mb-4">
+              TRUSTED BY LEADING SPACES ACROSS MALAYSIA
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-6 opacity-60">
+              {trustLogos.map((logo, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-blue-500 rounded"></div>
+                  <span className="text-sm font-medium text-gray-600">
+                    {logo}
+                  </span>
                 </div>
-
-                <div className="pt-4">
-                  <div className="text-lg font-semibold text-gray-700 mb-2">
-                    IOTA-Powered Security
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Experience next-generation access control with IOTA Identity
-                    and Wallet SDK. Secure, decentralized, and seamless access
-                    to all your booked spaces.
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

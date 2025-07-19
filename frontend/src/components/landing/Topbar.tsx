@@ -7,6 +7,7 @@ const Topbar = () => {
 
   const isLandingPage = location.pathname === "/";
   const isBookingPage = location.pathname.startsWith("/booking");
+  const isOwnerPage = location.pathname.startsWith("/owner");
 
   const navLinks = [
     { name: "Spaces", href: "#spaces" },
@@ -17,8 +18,18 @@ const Topbar = () => {
     { name: "FAQs", href: "#faqs" },
   ];
 
+  const ownerNavLinks = [
+    { name: "List Space", href: "/owner/list-space" },
+    { name: "Dashboard", href: "/owner/dashboard" },
+    { name: "Analytics", href: "/owner/analytics" },
+    { name: "Support", href: "/owner/support" },
+  ];
+
   const handleNavClick = (href: string) => {
-    if (!isLandingPage) {
+    if (href.startsWith("/")) {
+      // It's a route
+      navigate(href);
+    } else if (!isLandingPage) {
       // If not on landing page, navigate to landing first, then scroll
       navigate("/");
       setTimeout(() => {
@@ -40,6 +51,14 @@ const Topbar = () => {
     alert("IOTA wallet connection will be implemented here!");
   };
 
+  const handleUserTypeSwitch = () => {
+    if (isOwnerPage) {
+      navigate("/"); // Go to user landing page
+    } else {
+      navigate("/owner"); // Go to owner landing page
+    }
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -48,7 +67,7 @@ const Topbar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate(isOwnerPage ? "/owner" : "/")}
                 className="flex items-center space-x-2"
                 aria-label="SharedSpace.my Home"
               >
@@ -57,12 +76,17 @@ const Topbar = () => {
                 </div>
                 <span className="text-xl font-bold text-gray-900">
                   SharedSpace.my
+                  {isOwnerPage && (
+                    <span className="text-sm text-purple-600 ml-1">
+                      for Owners
+                    </span>
+                  )}
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Navigation Links - Only show on landing page */}
+          {/* Navigation Links - Landing page only */}
           {isLandingPage && (
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
@@ -81,7 +105,26 @@ const Topbar = () => {
             </div>
           )}
 
-          {/* Back to Landing - Only show on booking pages */}
+          {/* Owner Navigation Links */}
+          {isOwnerPage && (
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-8">
+                {ownerNavLinks.map((link) => (
+                  <button
+                    key={link.name}
+                    onClick={() => handleNavClick(link.href)}
+                    className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors duration-200"
+                    tabIndex={0}
+                    aria-label={link.name}
+                  >
+                    {link.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Back to Main Site - Only show on booking pages */}
           {isBookingPage && (
             <div className="hidden md:block">
               <Button
@@ -94,8 +137,19 @@ const Topbar = () => {
             </div>
           )}
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <div className="flex items-center space-x-4">
+            {/* User Type Switch */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUserTypeSwitch}
+              className="hidden sm:flex"
+            >
+              {isOwnerPage ? "Book Spaces" : "List Your Space"}
+            </Button>
+
+            {/* Connect Wallet */}
             <Button
               size="sm"
               className="bg-blue-600 text-white hover:bg-blue-700"

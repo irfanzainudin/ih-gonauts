@@ -1,26 +1,48 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
 
 const WhyChooseUsSection = () => {
-  const comparisons = [
+  const benefits = [
     {
-      others: "Generic one-size-fits-all solutions",
-      us: "Customized strategies tailored to your specific business needs",
+      title: "Instant Booking",
+      description:
+        "Book spaces in real-time with instant confirmation. No waiting, no hassle.",
+      icon: "⚡",
+      highlight: "Book in seconds",
     },
     {
-      others: "Limited communication and unclear timelines",
-      us: "Transparent communication with regular updates and clear milestones",
+      title: "Secure Access",
+      description:
+        "Advanced digital access control means no physical keys or complicated check-ins.",
+      icon: "🔐",
+      highlight: "Contactless entry",
     },
     {
-      others: "Basic support during business hours only",
-      us: "24/7 dedicated support team available whenever you need assistance",
+      title: "Earn Rewards",
+      description:
+        "Get loyalty points for every booking that you can use for discounts and perks.",
+      icon: "🎁",
+      highlight: "Every booking rewarded",
     },
     {
-      others: "Focus solely on project completion",
-      us: "Long-term partnership focused on your continued success and growth",
+      title: "24/7 Support",
+      description:
+        "Round-the-clock customer support and automated assistance for any issues.",
+      icon: "💬",
+      highlight: "Always here to help",
     },
     {
-      others: "Hidden fees and unclear pricing structure",
-      us: "Transparent pricing with no hidden costs or surprise charges",
+      title: "Best Prices",
+      description:
+        "Competitive pricing with transparent fees. No hidden costs or surprise charges.",
+      icon: "💰",
+      highlight: "Fair & transparent",
+    },
+    {
+      title: "Wide Selection",
+      description:
+        "From sports courts to meeting rooms - find exactly what you need across Malaysia.",
+      icon: "🏢",
+      highlight: "Every space type",
     },
   ];
 
@@ -30,73 +52,51 @@ const WhyChooseUsSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Why Choose Us Section
+            Why Choose SharedSpace.my?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Stand out from the competition.
-            <span className="block mt-2">
-              See the clear difference in our approach and understand why
-              leading businesses choose us over the alternatives.
-            </span>
+            We make space booking simple, secure, and rewarding. Here's why
+            thousands of users trust us with their space needs.
           </p>
         </div>
 
-        {/* Comparison Cards */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* What Others Provide */}
-          <Card className="border-red-200 bg-red-50">
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl font-semibold text-red-800 flex items-center justify-center space-x-2">
-                <span>❌</span>
-                <span>What Others Provide</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {comparisons.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-3 p-4 bg-white rounded-lg border border-red-200"
-                >
-                  <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700 leading-relaxed">{item.others}</p>
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {benefits.map((benefit, index) => (
+            <Card
+              key={index}
+              className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow duration-300 text-center"
+            >
+              <CardHeader className="pb-4">
+                <div className="text-4xl mb-4">{benefit.icon}</div>
+                <CardTitle className="text-xl font-semibold text-gray-900">
+                  {benefit.title}
+                </CardTitle>
+                <div className="text-sm text-blue-600 font-medium">
+                  {benefit.highlight}
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+              </CardHeader>
 
-          {/* What We Provide */}
-          <Card className="border-green-200 bg-green-50">
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl font-semibold text-green-800 flex items-center justify-center space-x-2">
-                <span>✅</span>
-                <span>What We Provide</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {comparisons.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-3 p-4 bg-white rounded-lg border border-green-200"
-                >
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700 leading-relaxed">{item.us}</p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+              <CardContent>
+                <p className="text-gray-600 leading-relaxed">
+                  {benefit.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Bottom Message */}
-        <div className="text-center">
-          <div className="bg-white p-8 rounded-lg border shadow-sm max-w-3xl mx-auto">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-              The Choice is Clear
+        <div className="text-center mt-16">
+          <div className="bg-blue-50 rounded-lg p-8 max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Powered by Advanced Technology
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              Don't settle for mediocre results when you can partner with a team
-              that truly cares about your success. We go above and beyond to
-              ensure every project delivers exceptional value and long-term
-              growth for your business.
+              Behind the scenes, we use cutting-edge blockchain technology
+              (IOTA) to ensure your bookings are secure, your access is
+              seamless, and your rewards are transparent. But you don't need to
+              worry about the technical details - we handle all of that for you.
             </p>
           </div>
         </div>
