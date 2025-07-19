@@ -33,24 +33,32 @@ const BookingSuccessPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get payment intent ID from URL params
+    // Get payment details from URL params
     const paymentIntentId = searchParams.get("payment_intent");
+    const transactionHash = searchParams.get("transaction_hash");
+    const paymentMethod = searchParams.get("payment_method");
     const isDemo = searchParams.get("demo") === "true";
     const isRealStripe = searchParams.get("real_stripe") === "true";
 
-    if (paymentIntentId) {
+    if (paymentIntentId || transactionHash) {
       // In a real app, you would verify the payment with your backend
       // and retrieve booking details
-      verifyPaymentAndGetBookingDetails(paymentIntentId, isDemo, isRealStripe);
+      verifyPaymentAndGetBookingDetails(
+        paymentIntentId || transactionHash || "",
+        isDemo,
+        isRealStripe,
+        paymentMethod
+      );
     } else {
       setIsLoading(false);
     }
   }, [searchParams]);
 
   const verifyPaymentAndGetBookingDetails = async (
-    paymentIntentId: string,
+    paymentId: string,
     isDemo: boolean = false,
-    isRealStripe: boolean = false
+    isRealStripe: boolean = false,
+    paymentMethod?: string | null
   ) => {
     try {
       // Simulate API call to verify payment and get booking details
@@ -64,7 +72,7 @@ const BookingSuccessPage = () => {
         time: "09:00 - 11:00",
         duration: 2,
         totalAmount: 120,
-        paymentMethod: "stripe",
+        paymentMethod: paymentMethod === "iota" ? "iota_wallet" : "stripe",
         paymentStatus: "completed",
         spaceLocation: "Kuala Lumpur, Malaysia",
         amenities: ["Projector", "Whiteboard", "Coffee Service"],
@@ -72,7 +80,10 @@ const BookingSuccessPage = () => {
 
       setBookingDetails(mockBookingDetails);
 
-      if (isRealStripe) {
+      if (paymentMethod === "iota") {
+        console.log("🎯 IOTA: Payment completed via IOTA wallet");
+        toast.success("IOTA payment completed! Your booking is confirmed.");
+      } else if (isRealStripe) {
         console.log("🎯 REAL STRIPE: Payment completed via Stripe sandbox");
         toast.success("Payment completed via Stripe sandbox!");
       } else if (isDemo) {
@@ -138,13 +149,17 @@ const BookingSuccessPage = () => {
             <div className="flex items-center gap-2 mb-2 justify-center">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span className="text-sm font-medium text-green-800">
-                {searchParams.get("real_stripe") === "true"
+                {searchParams.get("payment_method") === "iota"
+                  ? "IOTA WALLET SUCCESS"
+                  : searchParams.get("real_stripe") === "true"
                   ? "STRIPE SANDBOX SUCCESS"
                   : "DEMO SUCCESS"}
               </span>
             </div>
             <p className="text-sm text-green-700">
-              {searchParams.get("real_stripe") === "true"
+              {searchParams.get("payment_method") === "iota"
+                ? "Payment completed via IOTA wallet - transaction confirmed on IOTA network"
+                : searchParams.get("real_stripe") === "true"
                 ? "Payment completed via Stripe test environment - no real charges were made"
                 : "Demo payment completed successfully - this was a simulated transaction"}
             </p>

@@ -129,8 +129,8 @@ const WalletConnectButton = () => {
             className="bg-white/10 border-green-500/50 text-green-400 hover:bg-white/20 w-10 h-10 p-0 sm:w-40 sm:h-auto sm:p-2"
           >
             <div className="flex items-center justify-center sm:justify-start sm:space-x-2">
-              {/* IOTA Logo */}
-              <div className="w-5 h-5 flex items-center justify-center">
+              {/* IOTA Logo - Hidden on mobile */}
+              <div className="w-5 h-5 flex items-center justify-center hidden sm:flex">
                 <img src="/iota-logo.svg" alt="IOTA" className="w-5 h-5" />
               </div>
               {/* Desktop: Show truncated address, Mobile: Show wallet icon */}

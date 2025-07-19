@@ -26,6 +26,7 @@ import {
 import { useWalletConnection } from "../hooks/useWalletConnection";
 import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
 import StripePaymentModal from "../components/shared/ui/stripe-payment-modal";
+import IotaPaymentModal from "../components/shared/ui/iota-payment-modal";
 import { useWallets, useConnectWallet } from "@iota/dapp-kit";
 import { toast } from "sonner";
 import { mockBookingHistory } from "../lib/loyaltyService";
@@ -37,6 +38,7 @@ const SpaceDetailPage = () => {
   const { isConnected, isAutoConnecting } = useWalletConnection();
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showStripeModal, setShowStripeModal] = useState(false);
+  const [showIotaModal, setShowIotaModal] = useState(false);
   const wallets = useWallets();
   const { mutate: connect, isPending } = useConnectWallet();
 
@@ -114,31 +116,17 @@ const SpaceDetailPage = () => {
   };
 
   const handleIotaWalletBooking = async () => {
-    if (selectedTimeSlots.length === 0 || !space) return;
+    if (selectedTimeSlots.length === 0 || !space) {
+      toast.error("Please select time slots before proceeding with payment");
+      return;
+    }
 
     if (!isConnected) {
       setShowWalletModal(true);
       return;
     }
 
-    try {
-      const bookingRequest = createBookingRequest();
-      bookingRequest.paymentMethod = "iota_wallet";
-      bookingRequest.paymentStatus = "pending";
-
-      console.log("IOTA Wallet booking request:", bookingRequest);
-
-      // Here you would integrate with IOTA smart contract
-      // For now, we'll simulate the transaction
-      await simulateIotaTransaction(bookingRequest);
-
-      toast.success(
-        `Booking confirmed for ${space.name}! Total: RM${bookingSummary.totalPrice}`
-      );
-      navigate("/booking");
-    } catch {
-      toast.error("Failed to process IOTA wallet payment");
-    }
+    setShowIotaModal(true);
   };
 
   const handleStripeBooking = () => {
@@ -154,18 +142,8 @@ const SpaceDetailPage = () => {
     toast.error(`Payment failed: ${error}`);
   };
 
-  // Simulate IOTA transaction
-  const simulateIotaTransaction = async (bookingRequest: BookingRequest) => {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // In a real implementation, this would:
-    // 1. Sign the transaction with the connected wallet
-    // 2. Submit to IOTA network
-    // 3. Wait for confirmation
-    // 4. Update booking status
-
-    console.log("IOTA transaction simulated:", bookingRequest);
+  const handleIotaPaymentError = (error: string) => {
+    toast.error(`IOTA payment failed: ${error}`);
   };
 
   const handleConnectWallet = () => {
@@ -501,6 +479,15 @@ const SpaceDetailPage = () => {
           onClose={() => setShowStripeModal(false)}
           bookingRequest={createBookingRequest()}
           onPaymentError={handleStripePaymentError}
+        />
+      )}
+
+      {showIotaModal && selectedTimeSlots.length > 0 && (
+        <IotaPaymentModal
+          isOpen={showIotaModal}
+          onClose={() => setShowIotaModal(false)}
+          bookingRequest={createBookingRequest()}
+          onPaymentError={handleIotaPaymentError}
         />
       )}
     </div>
