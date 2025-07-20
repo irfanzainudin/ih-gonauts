@@ -19,10 +19,6 @@ import {
 import {
   MapPin,
   Star,
-  Calendar,
-  Clock,
-  Users,
-  ArrowLeft,
   Search,
   Dribbble,
   Briefcase,
