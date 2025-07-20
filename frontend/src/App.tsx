@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
-import Topbar from "@/components/landing/Topbar";
+import Topbar from "./components/landing/Topbar";
 import LandingPage from "./pages/LandingPage";
 import BookingPage from "./pages/BookingPage";
 import SpaceDetailPage from "./pages/SpaceDetailPage";
@@ -8,7 +8,7 @@ import BookingSuccessPage from "./pages/BookingSuccessPage";
 import StripeDemoPage from "./pages/StripeDemoPage";
 import OwnerLandingPage from "./pages/OwnerLandingPage";
 import WalletBookingsPage from "./pages/WalletBookingsPage";
-import WalletProvider from "@/components/wallet/WalletProvider";
+import WalletProvider from "./components/wallet/WalletProvider";
 
 function App() {
   return (
