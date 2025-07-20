@@ -8,6 +8,7 @@ import type {
 } from "../types/booking";
 import { mockSpaces } from "./mockData";
 import { LOYALTY_TIERS } from "./loyaltyService";
+import { bookSlot } from "./bookingService";
 
 // Transaction types for localStorage
 export interface Transaction {
@@ -120,6 +121,28 @@ class TransactionService {
     return currentTier.rewardTokens;
   }
 
+  // Book slots for a completed transaction
+  private bookSlotsForTransaction(transaction: Transaction): void {
+    const { bookingRequest } = transaction;
+    const { spaceId, date, startTime, endTime } = bookingRequest;
+
+    // Calculate all time slots that need to be booked
+    const startHour = parseInt(startTime.split(":")[0]);
+    const endHour = parseInt(endTime.split(":")[0]);
+
+    // Book each hour slot
+    for (let hour = startHour; hour < endHour; hour++) {
+      const slotTime = `${hour.toString().padStart(2, "0")}:00`;
+      const success = bookSlot(spaceId, date, slotTime);
+
+      if (success) {
+        console.log(`✅ Booked slot: ${spaceId} - ${date} ${slotTime}`);
+      } else {
+        console.log(`❌ Failed to book slot: ${spaceId} - ${date} ${slotTime}`);
+      }
+    }
+  }
+
   // Simulate IOTA wallet transaction
   async simulateIotaTransaction(
     bookingRequest: BookingRequest,
@@ -157,6 +180,9 @@ class TransactionService {
     const transactions = this.getTransactions();
     transactions.push(transaction);
     this.saveTransactions(transactions);
+
+    // Book the slots
+    this.bookSlotsForTransaction(transaction);
 
     // Update booking history
     this.updateBookingHistory(transaction);
@@ -202,6 +228,9 @@ class TransactionService {
     const transactions = this.getTransactions();
     transactions.push(transaction);
     this.saveTransactions(transactions);
+
+    // Book the slots
+    this.bookSlotsForTransaction(transaction);
 
     // Update booking history
     this.updateBookingHistory(transaction);

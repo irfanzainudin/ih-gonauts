@@ -125,8 +125,8 @@ const BookingConfirmationModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
             Booking Confirmation
@@ -136,7 +136,7 @@ const BookingConfirmationModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto flex-1 px-1">
           {/* Booking Summary */}
           <Card>
             <CardHeader>
@@ -295,7 +295,7 @@ const BookingConfirmationModal = ({
           </Card>
 
           {/* Action Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-shrink-0 pt-4 border-t">
             <Button onClick={onClose} variant="outline" className="flex-1">
               Close
             </Button>

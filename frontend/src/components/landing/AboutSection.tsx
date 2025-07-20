@@ -44,34 +44,29 @@ const AboutSection = () => {
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-gray-900">
-                Why Choose IOTA-Powered Access?
+              <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                🚀 Why It's Built on IOTA
               </h3>
               <ul className="space-y-3 text-gray-600">
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
                   <span>
-                    Feeless transactions through IOTA network for seamless
-                    bookings
+                    Zero transaction fees — bookings are feeless on-chain
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Secure identity with IOTA Identity</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
                   <span>
-                    Decentralized identity management with maximum security
+                    Earn loyalty tokens effortlessly with every booking
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>
-                    Automated loyalty rewards through IOTA Gas Station
-                  </span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>
-                    Sustainable, environmentally-friendly blockchain technology
-                  </span>
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Green tech — energy-efficient, no mining needed</span>
                 </li>
               </ul>
             </div>

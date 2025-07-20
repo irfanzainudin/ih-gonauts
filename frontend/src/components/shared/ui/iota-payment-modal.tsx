@@ -22,6 +22,7 @@ interface IotaPaymentModalProps {
   onClose: () => void;
   bookingRequest: BookingRequest;
   onPaymentError: (error: string) => void;
+  onPaymentSuccess?: () => void;
 }
 
 const IotaPaymentModal = ({
@@ -29,6 +30,7 @@ const IotaPaymentModal = ({
   onClose,
   bookingRequest,
   onPaymentError,
+  onPaymentSuccess,
 }: IotaPaymentModalProps) => {
   const navigate = useNavigate();
   const currentAccount = useCurrentAccount();
@@ -52,6 +54,9 @@ const IotaPaymentModal = ({
       setTransactionHash(transaction.transactionHash || "");
       console.log("🎯 IOTA: Payment completed successfully");
       setIsSuccess(true);
+
+      // Call success callback if provided
+      onPaymentSuccess?.();
 
       // Navigate to success page after a short delay
       setTimeout(() => {

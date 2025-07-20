@@ -1,159 +1,137 @@
-import { useNavigate } from "react-router-dom";
-import type { Space } from "../../types/booking";
-import { Button } from "../shared/ui/button";
-import { Card, CardContent, CardHeader } from "../shared/ui/card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
 import { Badge } from "../shared/ui/badge";
-import {
-  Dribbble,
-  Briefcase,
-  Monitor,
-  Ticket,
-  Building2,
-  MapPin,
-  Star,
-} from "lucide-react";
+import { Button } from "../shared/ui/button";
+import { MapPin, Users, Star } from "lucide-react";
+import type { Space } from "../../types/booking";
+import { debugBookedSlots } from "../../lib/bookingService";
 
 interface SpaceCardProps {
   space: Space;
-  onBook?: () => void;
+  onBook: (space: Space) => void;
 }
 
-const SpaceCard = ({ space }: SpaceCardProps) => {
-  const navigate = useNavigate();
-
-  const getSpaceTypeIcon = (type: string) => {
-    switch (type) {
-      case "sport":
-        return <Dribbble className="w-8 h-8 text-blue-600" />;
-      case "meeting":
-        return <Briefcase className="w-8 h-8 text-blue-600" />;
-      case "coworking":
-        return <Monitor className="w-8 h-8 text-blue-600" />;
-      case "event":
-        return <Ticket className="w-8 h-8 text-blue-600" />;
-      default:
-        return <Building2 className="w-8 h-8 text-blue-600" />;
-    }
-  };
-
-  const getSpaceTypeLabel = (type: string) => {
-    switch (type) {
-      case "sport":
-        return "Sport Venue";
-      case "meeting":
-        return "Meeting Room";
-      case "coworking":
-        return "Coworking Space";
-      case "event":
-        return "Event Hall";
-      default:
-        return "Space";
-    }
-  };
-
-  const availableToday = space.availability.filter(
-    (slot) =>
-      slot.date === new Date().toISOString().split("T")[0] && slot.isAvailable
-  ).length;
+const SpaceCard = ({ space, onBook }: SpaceCardProps) => {
+  const [showDebug, setShowDebug] = useState(false);
 
   const handleBookClick = () => {
-    navigate(`/booking/space/${space.id}`);
+    onBook(space);
+  };
+
+  const handleDebugClick = () => {
+    const bookedSlots = debugBookedSlots();
+    setShowDebug(!showDebug);
+    console.log("🔍 Debug info for space:", space.id, bookedSlots);
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "sport":
+        return "bg-blue-100 text-blue-800";
+      case "meeting":
+        return "bg-purple-100 text-purple-800";
+      case "coworking":
+        return "bg-green-100 text-green-800";
+      case "event":
+        return "bg-orange-100 text-orange-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case "sport":
+        return "Sports";
+      case "meeting":
+        return "Meeting";
+      case "coworking":
+        return "Coworking";
+      case "event":
+        return "Event";
+      default:
+        return type;
+    }
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="p-0">
-        {/* Image Placeholder */}
-        <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100 rounded-t-lg">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <div className="flex justify-center mb-2">
-                {getSpaceTypeIcon(space.type)}
+    <Card className="h-full flex flex-col">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+              {space.name}
+            </CardTitle>
+            <div className="flex items-center text-gray-600 mb-2">
+              <MapPin className="w-4 h-4 mr-1" />
+              <span className="text-sm">
+                {space.location.address}, {space.location.city}
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                <span>Up to {space.capacity} people</span>
               </div>
-              <div className="text-sm text-gray-600">Photo coming soon</div>
+              <div className="flex items-center">
+                <Star className="w-4 h-4 mr-1 text-yellow-500" />
+                <span>
+                  {space.rating} ({space.reviews} reviews)
+                </span>
+              </div>
             </div>
           </div>
-          <Badge className="absolute top-3 left-3 bg-white text-gray-800 hover:bg-white">
-            {getSpaceTypeLabel(space.type)}
+          <Badge className={getTypeColor(space.type)}>
+            {getTypeLabel(space.type)}
           </Badge>
         </div>
       </CardHeader>
 
-      <CardContent className="p-6 flex flex-col h-full">
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              {space.name}
-            </h3>
-            <p className="text-sm text-gray-600 flex items-center gap-1">
-              <MapPin className="w-4 h-4" />
-              {space.location.address}, {space.location.city}
-            </p>
+      <CardContent className="flex-1 flex flex-col">
+        <p className="text-gray-600 text-sm mb-4 flex-1">{space.description}</p>
+
+        <div className="space-y-3">
+          <div className="flex flex-wrap gap-1">
+            {space.amenities.slice(0, 3).map((amenity) => (
+              <Badge key={amenity} variant="secondary" className="text-xs">
+                {amenity}
+              </Badge>
+            ))}
+            {space.amenities.length > 3 && (
+              <Badge variant="secondary" className="text-xs">
+                +{space.amenities.length - 3} more
+              </Badge>
+            )}
           </div>
 
-          {/* Description */}
-          <p className="text-sm text-gray-700 line-clamp-2 mt-4">
-            {space.description}
-          </p>
-
-          {/* Rating and Reviews */}
-          <div className="flex items-center space-x-2 mt-4">
-            <div className="flex items-center">
-              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              <span className="text-sm font-medium text-gray-900 ml-1">
-                {space.rating}
-              </span>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-blue-600">
+              RM{space.pricePerHour}/hour
             </div>
-            <span className="text-sm text-gray-500">
-              ({space.reviews} reviews)
-            </span>
-          </div>
-
-          {/* Amenities */}
-          <div className="mt-4 min-h-[48px]">
-            <div className="flex flex-wrap gap-1">
-              {space.amenities.slice(0, 3).map((amenity) => (
-                <Badge key={amenity} variant="secondary" className="text-xs">
-                  {amenity}
-                </Badge>
-              ))}
-              {space.amenities.length > 3 && (
-                <Badge variant="secondary" className="text-xs">
-                  +{space.amenities.length - 3} more
-                </Badge>
-              )}
-            </div>
-          </div>
-
-          {/* Pricing and Availability */}
-          <div className="flex justify-between items-start pt-2 border-t mt-4 min-h-[60px]">
-            <div className="flex flex-col">
-              <div className="text-lg font-bold text-gray-900">
-                RM{space.pricePerHour}
-                <span className="text-sm font-normal text-gray-600">/hour</span>
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                Capacity: {space.capacity}{" "}
-                {space.capacity === 1 ? "person" : "people"}
-              </div>
-            </div>
-            <div className="text-right flex flex-col">
-              <div className="text-sm text-green-600 font-medium">
-                {availableToday} slots today
-              </div>
-            </div>
-          </div>
-
-          {/* Book Button - pushed to bottom */}
-          <div className="mt-auto pt-4">
             <Button
               onClick={handleBookClick}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700"
             >
-              View & Book
+              Book Now
             </Button>
           </div>
+
+          {/* Debug button - remove this in production */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDebugClick}
+            className="text-xs"
+          >
+            {showDebug ? "Hide Debug" : "Show Debug"}
+          </Button>
+
+          {showDebug && (
+            <div className="text-xs bg-gray-100 p-2 rounded">
+              <p>Space ID: {space.id}</p>
+              <p>Check console for booked slots</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

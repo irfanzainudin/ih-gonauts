@@ -56,7 +56,7 @@ const Footer = ({ showUserCTA = true }: FooterProps) => {
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
               Join thousands of users who trust SharedSpace.my for secure,
-              blockchain-powered space access. Start booking and earning IOTA
+              blockchain-powered space access. Start booking and earning SHRD
               rewards today!
             </p>
             <Button

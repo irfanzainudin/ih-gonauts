@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import QRCode from "qrcode";
+import { transactionService } from "../lib/transactionService";
+import type { BookingRequest } from "../types/booking";
 
 interface BookingDetails {
   id: string;
@@ -86,14 +88,70 @@ const BookingSuccessPage = () => {
         // Simulate API call to verify payment and get booking details
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
+        // For real Stripe payments, we need to book the slots
+        if (isRealStripe && paymentMethod !== "iota") {
+          // Try to get booking request from localStorage
+          const bookingKey = `stripe_booking_${paymentId}`;
+          const storedBooking = localStorage.getItem(bookingKey);
+
+          let bookingRequest: BookingRequest;
+
+          if (storedBooking) {
+            bookingRequest = JSON.parse(storedBooking);
+            // Clean up localStorage
+            localStorage.removeItem(bookingKey);
+            console.log(
+              "🎯 REAL STRIPE: Retrieved booking from localStorage:",
+              bookingRequest
+            );
+          } else {
+            // Fallback to default booking request
+            bookingRequest = {
+              spaceId: "sport-4", // Default space for demo
+              date: new Date().toISOString().split("T")[0],
+              startTime: "09:00",
+              endTime: "11:00",
+              duration: 2,
+              totalPrice: 120,
+            };
+            console.log("🎯 REAL STRIPE: Using fallback booking request");
+          }
+
+          // Store the transaction and book the slots
+          await transactionService.simulateStripeTransaction(
+            bookingRequest,
+            paymentId
+          );
+
+          console.log("🎯 REAL STRIPE: Slots booked for Stripe payment");
+        }
+
+        // Get booking details - use actual booking request if available
+        let actualBookingRequest: BookingRequest | null = null;
+        if (isRealStripe && paymentMethod !== "iota") {
+          const bookingKey = `stripe_booking_${paymentId}`;
+          const storedBooking = localStorage.getItem(bookingKey);
+          if (storedBooking) {
+            actualBookingRequest = JSON.parse(storedBooking);
+          }
+        }
+
         // Mock booking details - in real app, this would come from your backend
         const mockBookingDetails: BookingDetails = {
           id: `booking_${Math.random().toString(36).substr(2, 9)}`,
-          spaceName: "Premium Meeting Room",
-          date: new Date().toLocaleDateString("en-MY"),
-          time: "09:00 - 11:00",
-          duration: 2,
-          totalAmount: 120,
+          spaceName: actualBookingRequest
+            ? "Premium Meeting Room"
+            : "Premium Meeting Room",
+          date: actualBookingRequest
+            ? actualBookingRequest.date
+            : new Date().toLocaleDateString("en-MY"),
+          time: actualBookingRequest
+            ? `${actualBookingRequest.startTime} - ${actualBookingRequest.endTime}`
+            : "09:00 - 11:00",
+          duration: actualBookingRequest ? actualBookingRequest.duration : 2,
+          totalAmount: actualBookingRequest
+            ? actualBookingRequest.totalPrice
+            : 120,
           paymentMethod: paymentMethod === "iota" ? "iota_wallet" : "stripe",
           paymentStatus: "completed",
           spaceLocation: "Kuala Lumpur, Malaysia",
@@ -105,10 +163,8 @@ const BookingSuccessPage = () => {
 
         setBookingDetails(mockBookingDetails);
 
-        // Generate QR code for IOTA transactions
-        if (paymentMethod === "iota") {
-          await generateQRCode(mockBookingDetails);
-        }
+        // Generate QR code for both IOTA and Stripe transactions
+        await generateQRCode(mockBookingDetails);
 
         if (paymentMethod === "iota") {
           console.log("🎯 IOTA: Payment completed via IOTA wallet");
@@ -281,8 +337,8 @@ const BookingSuccessPage = () => {
           </CardContent>
         </Card>
 
-        {/* QR Code for IOTA Transactions */}
-        {bookingDetails?.paymentMethod === "iota_wallet" && (
+        {/* QR Code for Booking Verification */}
+        {qrCodeDataUrl && (
           <Card className="mb-6">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -293,8 +349,10 @@ const BookingSuccessPage = () => {
             <CardContent>
               <div className="text-center space-y-4">
                 <p className="text-sm text-gray-600">
-                  Scan this QR code to verify your booking details and IOTA
-                  transaction
+                  Scan this QR code to verify your booking details and payment
+                  {bookingDetails?.paymentMethod === "iota_wallet"
+                    ? " transaction"
+                    : " information"}
                 </p>
                 {qrCodeDataUrl ? (
                   <div className="flex justify-center">
@@ -325,6 +383,13 @@ const BookingSuccessPage = () => {
                     <p className="font-mono text-xs bg-gray-100 p-2 rounded">
                       TX Hash: {bookingDetails.transactionHash.slice(0, 8)}...
                       {bookingDetails.transactionHash.slice(-8)}
+                    </p>
+                  )}
+                  {bookingDetails.stripePaymentIntentId && (
+                    <p className="font-mono text-xs bg-gray-100 p-2 rounded">
+                      Payment Intent:{" "}
+                      {bookingDetails.stripePaymentIntentId.slice(0, 8)}...
+                      {bookingDetails.stripePaymentIntentId.slice(-8)}
                     </p>
                   )}
                 </div>

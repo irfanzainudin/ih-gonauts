@@ -19,6 +19,7 @@ interface StripePaymentModalProps {
   onClose: () => void;
   bookingRequest: BookingRequest;
   onPaymentError: (error: string) => void;
+  onPaymentSuccess?: () => void;
 }
 
 const StripePaymentModal = ({
@@ -26,6 +27,7 @@ const StripePaymentModal = ({
   onClose,
   bookingRequest,
   onPaymentError,
+  onPaymentSuccess,
 }: StripePaymentModalProps) => {
   const [paymentData, setPaymentData] = useState<StripePaymentData | null>(
     null
@@ -53,8 +55,15 @@ const StripePaymentModal = ({
     try {
       console.log("🎯 DEMO: Starting Stripe redirect flow...");
 
+      // Store booking request in localStorage for retrieval on success
+      const bookingKey = `stripe_booking_${paymentData.paymentIntentId}`;
+      localStorage.setItem(bookingKey, JSON.stringify(bookingRequest));
+
       // Actually redirect to Stripe (or simulate it)
       await stripeService.redirectToPayment(paymentData.clientSecret);
+
+      // Call success callback if provided
+      onPaymentSuccess?.();
     } catch (error) {
       console.error("❌ DEMO: Redirect failed:", error);
       toast.error("Failed to redirect to payment page");

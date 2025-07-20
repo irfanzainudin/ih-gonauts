@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import type { TimeSlot, BookingRequest } from "../types/booking";
 import { mockSpaces } from "../lib/mockData";
+import { getSpaceAvailability } from "../lib/bookingService";
 import { Button } from "../components/shared/ui/button";
 import {
   Card,
@@ -10,6 +11,12 @@ import {
   CardTitle,
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/shared/ui/accordion";
 import {
   Dribbble,
   Briefcase,
@@ -46,6 +53,7 @@ const SpaceDetailPage = () => {
     new Date().toISOString().split("T")[0]
   );
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
+  const [bookingUpdateTrigger, setBookingUpdateTrigger] = useState(0);
 
   // Find the space by ID
   const space = useMemo(() => {
@@ -67,10 +75,9 @@ const SpaceDetailPage = () => {
   // Get available time slots for selected date
   const availableSlots = useMemo(() => {
     if (!space) return [];
-    return space.availability.filter(
-      (slot) => slot.date === selectedDate && slot.isAvailable
-    );
-  }, [space, selectedDate]);
+    const spaceAvailability = getSpaceAvailability(space.id);
+    return spaceAvailability.filter((slot) => slot.date === selectedDate);
+  }, [space, selectedDate, bookingUpdateTrigger]);
 
   // Calculate total price and duration
   const bookingSummary = useMemo(() => {
@@ -127,6 +134,13 @@ const SpaceDetailPage = () => {
     }
 
     setShowIotaModal(true);
+  };
+
+  const handleBookingCompleted = () => {
+    // Trigger re-render to update slot availability
+    setBookingUpdateTrigger((prev) => prev + 1);
+    // Clear selected slots after booking
+    setSelectedTimeSlots([]);
   };
 
   const handleStripeBooking = () => {
@@ -281,25 +295,33 @@ const SpaceDetailPage = () => {
 
         {/* Space Images */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Gallery</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {getSpaceImages().map((image, index) => (
-              <div key={index} className="relative group">
-                <div className="w-full h-48 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200 bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="flex justify-center mb-2">
-                        {getSpaceTypeIcon(space.type)}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        Photo coming soon
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="gallery" className="border-none">
+              <AccordionTrigger className="text-xl font-semibold text-gray-900 hover:no-underline py-0">
+                Gallery
+              </AccordionTrigger>
+              <AccordionContent className="pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {getSpaceImages().map((image, index) => (
+                    <div key={index} className="relative group">
+                      <div className="w-full h-48 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200 bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="flex justify-center mb-2">
+                              {getSpaceTypeIcon(space.type)}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Photo coming soon
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -357,35 +379,80 @@ const SpaceDetailPage = () => {
             {/* Time Slots */}
             <Card>
               <CardHeader>
-                <CardTitle>
-                  Available Time Slots ({formatDate(selectedDate)})
-                </CardTitle>
+                <CardTitle>Time Slots ({formatDate(selectedDate)})</CardTitle>
               </CardHeader>
               <CardContent>
                 {availableSlots.length > 0 ? (
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                    {availableSlots.map((slot) => {
-                      const isSelected = selectedTimeSlots.some(
-                        (s) => s.startTime === slot.startTime
-                      );
-                      return (
-                        <Button
-                          key={`${slot.date}-${slot.startTime}`}
-                          variant={isSelected ? "default" : "outline"}
-                          onClick={() => handleTimeSlotToggle(slot)}
-                          className="text-xs p-2 h-auto flex flex-col"
-                        >
-                          <div>{slot.startTime}</div>
-                          <div className="text-xs opacity-75">
-                            RM{slot.price}
-                          </div>
-                        </Button>
-                      );
-                    })}
+                  <div className="space-y-4">
+                    {/* Legend */}
+                    <div className="flex items-center gap-4 text-xs text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-green-100 border border-green-300 rounded"></div>
+                        <span>Available</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-red-100 border border-red-300 rounded"></div>
+                        <span>Booked</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
+                        <span>Selected</span>
+                      </div>
+                    </div>
+
+                    {/* Time Slots Grid */}
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                      {availableSlots.map((slot) => {
+                        const isSelected = selectedTimeSlots.some(
+                          (s) => s.startTime === slot.startTime
+                        );
+                        const isBooked = !slot.isAvailable;
+
+                        return (
+                          <Button
+                            key={`${slot.date}-${slot.startTime}`}
+                            variant={
+                              isSelected
+                                ? "default"
+                                : isBooked
+                                ? "outline"
+                                : "outline"
+                            }
+                            onClick={() =>
+                              !isBooked && handleTimeSlotToggle(slot)
+                            }
+                            disabled={isBooked}
+                            className={`text-xs p-2 h-auto flex flex-col ${
+                              isBooked
+                                ? "bg-red-50 border-red-300 text-red-700 hover:bg-red-50 cursor-not-allowed"
+                                : isSelected
+                                ? "bg-blue-600 text-white hover:bg-blue-700"
+                                : "hover:bg-gray-50"
+                            }`}
+                          >
+                            <div className={isBooked ? "line-through" : ""}>
+                              {slot.startTime}
+                            </div>
+                            <div
+                              className={`text-xs ${
+                                isBooked ? "opacity-50" : "opacity-75"
+                              }`}
+                            >
+                              RM{slot.price}
+                            </div>
+                            {isBooked && (
+                              <div className="text-xs text-red-600 font-medium">
+                                Booked
+                              </div>
+                            )}
+                          </Button>
+                        );
+                      })}
+                    </div>
                   </div>
                 ) : (
                   <p className="text-gray-500">
-                    No available slots for this date
+                    No time slots available for this date
                   </p>
                 )}
               </CardContent>
@@ -507,6 +574,7 @@ const SpaceDetailPage = () => {
           onClose={() => setShowStripeModal(false)}
           bookingRequest={createBookingRequest()}
           onPaymentError={handleStripePaymentError}
+          onPaymentSuccess={handleBookingCompleted}
         />
       )}
 
@@ -516,6 +584,7 @@ const SpaceDetailPage = () => {
           onClose={() => setShowIotaModal(false)}
           bookingRequest={createBookingRequest()}
           onPaymentError={handleIotaPaymentError}
+          onPaymentSuccess={handleBookingCompleted}
         />
       )}
     </div>

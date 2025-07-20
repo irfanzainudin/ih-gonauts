@@ -182,7 +182,11 @@ const BookingPage = () => {
           <div className="lg:col-span-3">
             <div className="grid md:grid-cols-2 gap-6">
               {filteredSpaces.map((space) => (
-                <SpaceCard key={space.id} space={space} />
+                <SpaceCard
+                  key={space.id}
+                  space={space}
+                  onBook={(space) => navigate(`/booking/space/${space.id}`)}
+                />
               ))}
             </div>
 
