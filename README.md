@@ -75,4 +75,20 @@ Backend:
   - RewardTracker (token rewards)
 - IOTA Gas Station (gas sponsorship)
 - IOTA Node (DID anchoring & proof)
+```
 
+## Installation
+
+First, make sure to install the dependencies.
+
+```sh
+npm install
+```
+
+And then, simply run this command:
+
+```sh
+npm run dev
+```
+
+Since the backend is still in development, we can only show you the installation for the frontend. In the future, we will update the repo with the backend and more code. Star this repo if you're interested in the journey.
