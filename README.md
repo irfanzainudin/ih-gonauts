@@ -42,6 +42,23 @@ SharedSpace.my fixes this by:
 
 ---
 
+
+## 🗺️ Roadmap
+
+✅ Booking platform with wallet-based login
+⬜ Integration with IOTA Gas Station for gasless UX
+⬜ Loyalty reward system with $SHRD token
+⬜ Map-based space listing
+⬜ QR check-in using DID
+⬜ Verified Venue DID credentialing
+⬜ Escrow logic for refundable deposits
+⬜ Smart-lock integration for seamless entry
+⬜ Space owner dashboard and analytics
+⬜ Cross-dApp portability of $SHRD tokens
+⬜ SharedSpace developer SDK (for ecosystem builders)
+
+---
+
 ## 🛠️ Tech Stack
 
 ```text
@@ -57,3 +74,4 @@ Backend:
   - RewardTracker (token rewards)
 - IOTA Gas Station (gas sponsorship)
 - IOTA Node (DID anchoring & proof)
+
