@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../shared/ui/card";
 import { Badge } from "../shared/ui/badge";
 import { Button } from "../shared/ui/button";
 import { MapPin, Users, Star } from "lucide-react";
 import type { Space } from "../../types/booking";
-import { debugBookedSlots } from "../../lib/bookingService";
 
 interface SpaceCardProps {
   space: Space;
@@ -12,16 +10,8 @@ interface SpaceCardProps {
 }
 
 const SpaceCard = ({ space, onBook }: SpaceCardProps) => {
-  const [showDebug, setShowDebug] = useState(false);
-
   const handleBookClick = () => {
     onBook(space);
-  };
-
-  const handleDebugClick = () => {
-    const bookedSlots = debugBookedSlots();
-    setShowDebug(!showDebug);
-    console.log("🔍 Debug info for space:", space.id, bookedSlots);
   };
 
   const getTypeColor = (type: string) => {
@@ -81,17 +71,21 @@ const SpaceCard = ({ space, onBook }: SpaceCardProps) => {
               </div>
             </div>
           </div>
-          <Badge className={getTypeColor(space.type)}>
+          <Badge
+            className={`${getTypeColor(space.type)} ml-3 flex-shrink-0 -mt-2`}
+          >
             {getTypeLabel(space.type)}
           </Badge>
         </div>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col">
-        <p className="text-gray-600 text-sm mb-4 flex-1">{space.description}</p>
+        <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-3">
+          {space.description}
+        </p>
 
         <div className="space-y-3">
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 min-h-[24px]">
             {space.amenities.slice(0, 3).map((amenity) => (
               <Badge key={amenity} variant="secondary" className="text-xs">
                 {amenity}
@@ -104,7 +98,7 @@ const SpaceCard = ({ space, onBook }: SpaceCardProps) => {
             )}
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-2">
             <div className="text-2xl font-bold text-blue-600">
               RM{space.pricePerHour}/hour
             </div>
@@ -115,23 +109,6 @@ const SpaceCard = ({ space, onBook }: SpaceCardProps) => {
               Book Now
             </Button>
           </div>
-
-          {/* Debug button - remove this in production */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDebugClick}
-            className="text-xs"
-          >
-            {showDebug ? "Hide Debug" : "Show Debug"}
-          </Button>
-
-          {showDebug && (
-            <div className="text-xs bg-gray-100 p-2 rounded">
-              <p>Space ID: {space.id}</p>
-              <p>Check console for booked slots</p>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

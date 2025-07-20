@@ -195,17 +195,3 @@ export const getBookedSlots = (spaceId: string): string[] => {
 export const clearAllBookings = () => {
   localStorage.removeItem(BOOKED_SLOTS_KEY);
 };
-
-// Debug function to check current booked slots
-export const debugBookedSlots = () => {
-  const bookedSlots = getBookedSlotsFromStorage();
-  console.log("🔍 Current booked slots:", bookedSlots);
-
-  const allBookedSlots: Record<string, string[]> = {};
-  bookedSlots.forEach((slots, spaceId) => {
-    allBookedSlots[spaceId] = Array.from(slots);
-  });
-
-  console.log("📋 All booked slots by space:", allBookedSlots);
-  return allBookedSlots;
-};

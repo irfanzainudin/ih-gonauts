@@ -1,8 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
-import type { TimeSlot, BookingRequest } from "../types/booking";
-import { mockSpaces } from "../lib/mockData";
-import { getSpaceAvailability } from "../lib/bookingService";
+import { useParams, useNavigate } from "react-router-dom";
+import { useWalletConnection } from "../hooks/useWalletConnection";
+import { useWallets, useConnectWallet } from "@iota/dapp-kit";
 import { Button } from "../components/shared/ui/button";
 import {
   Card,
@@ -18,26 +17,31 @@ import {
   AccordionTrigger,
 } from "../components/shared/ui/accordion";
 import {
+  MapPin,
+  Star,
+  Calendar,
+  Clock,
+  Users,
+  ArrowLeft,
+  Search,
   Dribbble,
   Briefcase,
   Monitor,
   Ticket,
   Building2,
-  MapPin,
-  Star,
-  Search,
   Wallet,
   CreditCard,
   Loader2,
 } from "lucide-react";
-import { useWalletConnection } from "../hooks/useWalletConnection";
+import { toast } from "sonner";
+import { mockSpaces } from "../lib/mockData";
+import { getSpaceAvailability } from "../lib/bookingService";
+import { calculateLoyaltyProgress } from "../lib/loyaltyService";
+import { transactionService } from "../lib/transactionService";
+import type { TimeSlot, BookingRequest } from "../types/booking";
 import WalletRequiredModal from "../components/shared/ui/wallet-required-modal";
 import StripePaymentModal from "../components/shared/ui/stripe-payment-modal";
 import IotaPaymentModal from "../components/shared/ui/iota-payment-modal";
-import { useWallets, useConnectWallet } from "@iota/dapp-kit";
-import { toast } from "sonner";
-import { mockBookingHistory } from "../lib/loyaltyService";
-import { calculateLoyaltyProgress } from "../lib/loyaltyService";
 
 const SpaceDetailPage = () => {
   const { spaceId } = useParams<{ spaceId: string }>();
@@ -91,7 +95,9 @@ const SpaceDetailPage = () => {
 
   // Calculate loyalty progress
   const loyaltyProgress = useMemo(() => {
-    return calculateLoyaltyProgress(mockBookingHistory);
+    return calculateLoyaltyProgress(
+      transactionService.getBookingHistoryForUser()
+    );
   }, []);
 
   const handleTimeSlotToggle = (slot: TimeSlot) => {
@@ -506,7 +512,9 @@ const SpaceDetailPage = () => {
                     <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-3 rounded-lg border border-purple-200">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-2xl">🥇</span>
+                          <span className="text-2xl">
+                            {loyaltyProgress.currentTier.icon}
+                          </span>
                           <span className="font-medium text-purple-700">
                             {loyaltyProgress.currentTier.name} Member
                           </span>
@@ -516,7 +524,7 @@ const SpaceDetailPage = () => {
                         </span>
                       </div>
                       <div className="text-sm text-purple-600">
-                        Earn {loyaltyProgress.currentTier.rewardTokens} IOTA
+                        Earn {loyaltyProgress.currentTier.rewardTokens} SHRD
                         tokens with this booking
                       </div>
                     </div>
