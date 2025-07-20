@@ -79,9 +79,11 @@ const Footer = ({ showUserCTA = true }: FooterProps) => {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-2 mb-6">
-                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">S</span>
-                </div>
+                <img
+                  src="/shared-space-my-logo.png"
+                  alt="SharedSpace.my Logo"
+                  className="h-8 w-8 object-contain"
+                />
                 <span className="text-xl font-bold">SharedSpace.my</span>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6">

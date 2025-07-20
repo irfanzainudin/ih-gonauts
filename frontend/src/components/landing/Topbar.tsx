@@ -65,9 +65,11 @@ const Topbar = () => {
                 className="flex items-center space-x-2"
                 aria-label="SharedSpace.my Home"
               >
-                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">S</span>
-                </div>
+                <img
+                  src="/shared-space-my-logo.png"
+                  alt="SharedSpace.my Logo"
+                  className="h-8 w-8 object-contain"
+                />
                 <span className="text-xl font-bold text-gray-900">
                   SharedSpace.my
                   {isOwnerPage && (

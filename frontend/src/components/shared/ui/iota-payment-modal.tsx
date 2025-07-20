@@ -79,7 +79,7 @@ const IotaPaymentModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Payment with IOTA Wallet</DialogTitle>
           <DialogDescription>
@@ -101,15 +101,15 @@ const IotaPaymentModal = ({
         </div>
 
         {!isSuccess ? (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="text-center">
-              <div className="flex justify-center mb-4">
-                <Wallet className="w-12 h-12 text-purple-600" />
+              <div className="flex justify-center mb-3">
+                <Wallet className="w-10 h-10 text-purple-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
                 Ready to Pay with IOTA
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 mb-2">
                 Total amount: {bookingRequest.totalPrice} MIOTA
               </p>
               <p className="text-sm text-gray-500">
@@ -119,10 +119,10 @@ const IotaPaymentModal = ({
             </div>
 
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle className="text-base">Payment Summary</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Amount</span>
                   <span className="font-semibold text-lg">
@@ -148,7 +148,7 @@ const IotaPaymentModal = ({
 
             {/* Loyalty Rewards Preview */}
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 rounded-lg border border-yellow-200">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1">
                 <Coins className="w-4 h-4 text-yellow-600" />
                 <span className="font-medium text-yellow-800">
                   Loyalty Rewards
@@ -160,7 +160,7 @@ const IotaPaymentModal = ({
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               <Button
                 onClick={handleProcessPayment}
                 disabled={isProcessing}
@@ -195,24 +195,24 @@ const IotaPaymentModal = ({
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="text-center">
-              <div className="flex justify-center mb-4">
-                <CheckCircle className="w-12 h-12 text-green-600" />
+              <div className="flex justify-center mb-3">
+                <CheckCircle className="w-10 h-10 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
                 Payment Successful!
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 mb-2">
                 Your IOTA payment has been processed successfully.
               </p>
             </div>
 
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle className="text-base">Transaction Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Transaction Hash</span>
                   <span className="text-xs font-mono text-gray-900">
@@ -236,7 +236,7 @@ const IotaPaymentModal = ({
             </Card>
 
             <div className="bg-gradient-to-r from-green-50 to-blue-50 p-3 rounded-lg border border-green-200">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1">
                 <Sparkles className="w-4 h-4 text-green-600" />
                 <span className="font-medium text-green-800">
                   Loyalty Tokens Earned!

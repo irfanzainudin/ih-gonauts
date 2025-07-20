@@ -24,7 +24,7 @@ const WalletRequiredModal = ({
 }: WalletRequiredModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <AlertCircle className="h-5 w-5 text-amber-500" />

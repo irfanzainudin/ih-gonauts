@@ -136,14 +136,14 @@ const BookingConfirmationModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 overflow-y-auto flex-1 px-1">
+        <div className="space-y-3 overflow-y-auto flex-1 px-1">
           {/* Booking Summary */}
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle className="text-lg">{booking.spaceName}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-gray-500" />
                   <div>
@@ -190,10 +190,10 @@ const BookingConfirmationModal = ({
 
           {/* Payment Details */}
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle className="text-base">Payment Details</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Amount Paid</span>
                 <span className="font-semibold text-lg">{booking.amount}</span>
@@ -236,7 +236,7 @@ const BookingConfirmationModal = ({
 
           {/* Loyalty Rewards */}
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-yellow-600" />
                 Loyalty Rewards
@@ -257,14 +257,14 @@ const BookingConfirmationModal = ({
 
           {/* QR Code for Verification */}
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
                 <QrCode className="w-4 h-4 text-blue-600" />
                 Booking Verification QR Code
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-3">
                 <p className="text-sm text-gray-600">
                   Scan this QR code to verify your booking details
                 </p>
@@ -277,7 +277,7 @@ const BookingConfirmationModal = ({
                     />
                   </div>
                 ) : (
-                  <div className="flex justify-center items-center h-48 bg-gray-50 rounded-lg">
+                  <div className="flex justify-center items-center h-40 bg-gray-50 rounded-lg">
                     <div className="text-center">
                       <QrCode className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                       <p className="text-sm text-gray-500">
@@ -295,7 +295,7 @@ const BookingConfirmationModal = ({
           </Card>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 flex-shrink-0 pt-4 border-t">
+          <div className="flex gap-3 flex-shrink-0 pt-3 border-t">
             <Button onClick={onClose} variant="outline" className="flex-1">
               Close
             </Button>
