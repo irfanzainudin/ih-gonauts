@@ -137,6 +137,33 @@ export const mockSpaces: Space[] = [
   },
   {
     id: "sport-5",
+    name: "Pickle Ball Hell",
+    type: "sport",
+    description:
+      "The most intense pickle ball experience you'll ever have. Inferno-level competition with scorching hot courts and devilishly good equipment.",
+    images: ["/placeholder-pickleball.jpg"],
+    location: {
+      address: "Cheras, Kuala Lumpur",
+      city: "Kuala Lumpur",
+      state: "Selangor",
+      coordinates: { lat: 3.0892, lng: 101.6869 },
+    },
+    amenities: [
+      "Inferno Courts",
+      "Devil's Equipment",
+      "Hell's Changing Rooms",
+      "Satanic Parking",
+      "Burning Shower Facilities",
+      "Underworld Pro Shop",
+    ],
+    capacity: 8,
+    pricePerHour: 66,
+    rating: 4.6,
+    reviews: 666,
+    availability: generateTimeSlots(66),
+  },
+  {
+    id: "sport-6",
     name: "Tennis Excellence Center",
     type: "sport",
     description:
@@ -163,7 +190,7 @@ export const mockSpaces: Space[] = [
     availability: generateTimeSlots(75),
   },
   {
-    id: "sport-6",
+    id: "sport-7",
     name: "Squash Masters Arena",
     type: "sport",
     description:
@@ -189,7 +216,7 @@ export const mockSpaces: Space[] = [
     availability: generateTimeSlots(50),
   },
   {
-    id: "sport-7",
+    id: "sport-8",
     name: "Table Tennis Pro",
     type: "sport",
     description:
@@ -215,7 +242,7 @@ export const mockSpaces: Space[] = [
     availability: generateTimeSlots(35),
   },
   {
-    id: "sport-8",
+    id: "sport-9",
     name: "Volleyball Champions",
     type: "sport",
     description:
@@ -241,7 +268,7 @@ export const mockSpaces: Space[] = [
     availability: generateTimeSlots(70),
   },
   {
-    id: "sport-9",
+    id: "sport-10",
     name: "Swimming Excellence",
     type: "sport",
     description:
@@ -268,7 +295,7 @@ export const mockSpaces: Space[] = [
     availability: generateTimeSlots(90),
   },
   {
-    id: "sport-10",
+    id: "sport-11",
     name: "Gym & Fitness Studio",
     type: "sport",
     description:

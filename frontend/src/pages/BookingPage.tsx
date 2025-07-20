@@ -25,6 +25,7 @@ const BookingPage = () => {
     const typeParam = searchParams.get("type") as SpaceType;
     const dateParam = searchParams.get("date");
     const searchParam = searchParams.get("search");
+    const locationParam = searchParams.get("location");
 
     const newFilters: BookingFilters = {
       types:
@@ -34,6 +35,7 @@ const BookingPage = () => {
           : ["sport", "meeting", "coworking", "event"],
       date: dateParam || undefined,
       searchQuery: searchParam || undefined,
+      location: locationParam || undefined,
     };
 
     setFilters(newFilters);
@@ -85,7 +87,6 @@ const BookingPage = () => {
         (space) => space.capacity >= filters.capacity!
       );
     }
-
     return filtered;
   }, [filters]);
 

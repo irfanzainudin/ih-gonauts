@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/ui/button";
 import { Input } from "../shared/ui/input";
@@ -14,6 +15,30 @@ import { Dribbble, Briefcase, Monitor, Ticket } from "lucide-react";
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const [selectedType, setSelectedType] = useState<string>("all");
+  const [location, setLocation] = useState<string>("");
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (selectedType && selectedType !== "all") {
+      params.append("type", selectedType);
+    }
+
+    if (location.trim()) {
+      params.append("location", location.trim());
+    }
+
+    if (date) {
+      params.append("date", date);
+    }
+
+    const queryString = params.toString();
+    navigate(`/booking${queryString ? `?${queryString}` : ""}`);
+  };
 
   return (
     <section id="home" className="bg-white py-20 px-4 sm:px-6 lg:px-8">
@@ -41,7 +66,7 @@ const HeroSection = () => {
                 >
                   Choose a space type
                 </Label>
-                <Select>
+                <Select value={selectedType} onValueChange={setSelectedType}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Spaces" />
                   </SelectTrigger>
@@ -66,6 +91,8 @@ const HeroSection = () => {
                   id="location"
                   type="text"
                   placeholder="Kuala Lumpur, Selangor..."
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                 />
               </div>
 
@@ -79,14 +106,15 @@ const HeroSection = () => {
                 <Input
                   id="date"
                   type="date"
-                  defaultValue={new Date().toISOString().split("T")[0]}
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
                 />
               </div>
 
               <Button
                 size="lg"
                 className="bg-blue-600 text-white hover:bg-blue-700 px-8"
-                onClick={() => navigate("/booking")}
+                onClick={handleSearch}
               >
                 Search Spaces
               </Button>
