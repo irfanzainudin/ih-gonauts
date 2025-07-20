@@ -26,15 +26,34 @@ import {
   formatLoyaltyTokens,
   LOYALTY_TIERS,
 } from "../../lib/loyaltyService";
+import { transactionService } from "../../lib/transactionService";
+import { useCurrentAccount } from "@iota/dapp-kit";
 
 interface LoyaltyDashboardProps {
   bookings: BookingHistory[];
+  onBookingClick?: (booking: BookingHistory) => void;
 }
 
-const LoyaltyDashboard = ({ bookings }: LoyaltyDashboardProps) => {
+const LoyaltyDashboard = ({
+  bookings,
+  onBookingClick,
+}: LoyaltyDashboardProps) => {
   const [activeTab, setActiveTab] = useState<
     "overview" | "history" | "rewards"
   >("overview");
+  const currentAccount = useCurrentAccount();
+
+  // Get real loyalty data from transaction service
+  const totalTokensEarned = transactionService.getTotalLoyaltyTokensEarned(
+    currentAccount?.address
+  );
+  const totalTokensUsed = transactionService.getTotalLoyaltyTokensUsed(
+    currentAccount?.address
+  );
+  const availableTokens = transactionService.getAvailableLoyaltyTokens(
+    currentAccount?.address
+  );
+
   const loyaltyProgress = calculateLoyaltyProgress(bookings);
 
   const getTierColor = (tierId: string) => {
@@ -127,7 +146,7 @@ const LoyaltyDashboard = ({ bookings }: LoyaltyDashboardProps) => {
             <div className="flex items-center gap-2">
               <Coins className="w-5 h-5 text-yellow-500" />
               <span className="text-2xl font-bold text-gray-900">
-                {formatLoyaltyTokens(loyaltyProgress.availableRewardTokens)}
+                {formatLoyaltyTokens(availableTokens)}
               </span>
             </div>
             <p className="text-xs text-gray-500 mt-1">Ready to use</p>
@@ -144,7 +163,7 @@ const LoyaltyDashboard = ({ bookings }: LoyaltyDashboardProps) => {
             <div className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-green-500" />
               <span className="text-2xl font-bold text-gray-900">
-                {formatLoyaltyTokens(loyaltyProgress.totalRewardTokens)}
+                {formatLoyaltyTokens(totalTokensEarned)}
               </span>
             </div>
             <p className="text-xs text-gray-500 mt-1">All time</p>
@@ -161,7 +180,7 @@ const LoyaltyDashboard = ({ bookings }: LoyaltyDashboardProps) => {
             <div className="flex items-center gap-2">
               <Gift className="w-5 h-5 text-purple-500" />
               <span className="text-2xl font-bold text-gray-900">
-                {formatLoyaltyTokens(loyaltyProgress.usedRewardTokens)}
+                {formatLoyaltyTokens(totalTokensUsed)}
               </span>
             </div>
             <p className="text-xs text-gray-500 mt-1">Redeemed</p>
@@ -284,7 +303,8 @@ const LoyaltyDashboard = ({ bookings }: LoyaltyDashboardProps) => {
                 .map((booking) => (
                   <div
                     key={booking.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                    onClick={() => onBookingClick?.(booking)}
                   >
                     <div>
                       <div className="font-medium">{booking.spaceName}</div>

@@ -201,6 +201,11 @@ const SpaceDetailPage = () => {
     }
   };
 
+  const getSpaceImages = (): string[] => {
+    // Return array of 6 items for consistent layout
+    return Array(6).fill("");
+  };
+
   if (!space) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -271,6 +276,29 @@ const SpaceDetailPage = () => {
                 {space.capacity === 1 ? "person" : "people"}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Space Images */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Gallery</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {getSpaceImages().map((image, index) => (
+              <div key={index} className="relative group">
+                <div className="w-full h-48 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200 bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="flex justify-center mb-2">
+                        {getSpaceTypeIcon(space.type)}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Photo coming soon
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

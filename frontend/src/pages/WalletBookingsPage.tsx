@@ -9,16 +9,33 @@ import {
 } from "@/components/shared/ui/card";
 import { ArrowLeft, Calendar, MapPin, Clock, Trophy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import LoyaltyDashboard from "@/components/wallet/LoyaltyDashboard";
-import { mockBookingHistory } from "@/lib/loyaltyService";
+import BookingConfirmationModal from "@/components/shared/ui/booking-confirmation-modal";
+import { transactionService } from "@/lib/transactionService";
 import type { BookingHistory } from "@/types/booking";
 
 const WalletBookingsPage = () => {
   const currentAccount = useCurrentAccount();
   const navigate = useNavigate();
+  const [selectedBooking, setSelectedBooking] = useState<BookingHistory | null>(
+    null
+  );
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
-  // Use the mock booking history from loyalty service
-  const bookings: BookingHistory[] = mockBookingHistory;
+  // Use the real booking history from transaction service
+  const bookings: BookingHistory[] =
+    transactionService.getBookingHistoryForUser();
+
+  const handleBookingClick = (booking: BookingHistory) => {
+    setSelectedBooking(booking);
+    setShowBookingModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowBookingModal(false);
+    setSelectedBooking(null);
+  };
 
   if (!currentAccount) {
     return (
@@ -66,7 +83,10 @@ const WalletBookingsPage = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Loyalty Dashboard */}
           <div className="lg:col-span-2">
-            <LoyaltyDashboard bookings={bookings} />
+            <LoyaltyDashboard
+              bookings={bookings}
+              onBookingClick={handleBookingClick}
+            />
           </div>
 
           {/* Right Column - Recent Bookings */}
@@ -101,7 +121,8 @@ const WalletBookingsPage = () => {
                       .map((booking) => (
                         <div
                           key={booking.id}
-                          className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+                          className="p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                          onClick={() => handleBookingClick(booking)}
                         >
                           <div className="flex items-center justify-between mb-2">
                             <div className="font-medium text-sm">
@@ -141,6 +162,15 @@ const WalletBookingsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Booking Confirmation Modal */}
+      {selectedBooking && (
+        <BookingConfirmationModal
+          isOpen={showBookingModal}
+          onClose={handleCloseModal}
+          booking={selectedBooking}
+        />
+      )}
     </div>
   );
 };

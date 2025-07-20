@@ -13,6 +13,9 @@ import { Wallet, Loader2, CheckCircle, Coins, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import type { BookingRequest } from "../../../types/booking";
 import { useNavigate } from "react-router-dom";
+import { transactionService } from "../../../lib/transactionService";
+import { calculateLoyaltyProgress } from "../../../lib/loyaltyService";
+import { useCurrentAccount } from "@iota/dapp-kit";
 
 interface IotaPaymentModalProps {
   isOpen: boolean;
@@ -28,27 +31,32 @@ const IotaPaymentModal = ({
   onPaymentError,
 }: IotaPaymentModalProps) => {
   const navigate = useNavigate();
+  const currentAccount = useCurrentAccount();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string>("");
 
+  // Get user's loyalty information
+  const userBookings = transactionService.getBookingHistoryForUser();
+  const loyaltyProgress = calculateLoyaltyProgress(userBookings);
+
   const handleProcessPayment = async () => {
     setIsProcessing(true);
     try {
-      // Simulate IOTA transaction processing
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Use transaction service to simulate and store IOTA transaction
+      const transaction = await transactionService.simulateIotaTransaction(
+        bookingRequest,
+        currentAccount?.address
+      );
 
-      // Generate mock transaction hash
-      const mockHash = `0x${Math.random().toString(16).substr(2, 64)}`;
-      setTransactionHash(mockHash);
-
+      setTransactionHash(transaction.transactionHash || "");
       console.log("🎯 IOTA: Payment completed successfully");
       setIsSuccess(true);
 
       // Navigate to success page after a short delay
       setTimeout(() => {
         navigate(
-          `/booking/success?payment_method=iota&transaction_hash=${mockHash}&demo=true`
+          `/booking/success?payment_method=iota&transaction_hash=${transaction.transactionHash}&demo=true`
         );
       }, 2000);
     } catch (error) {
@@ -142,7 +150,8 @@ const IotaPaymentModal = ({
                 </span>
               </div>
               <div className="text-sm text-yellow-700">
-                Earn 15 IOTA tokens with this booking (Gold tier)
+                Earn {loyaltyProgress.currentTier.rewardTokens} IOTA tokens with
+                this booking ({loyaltyProgress.currentTier.name} tier)
               </div>
             </div>
 
@@ -229,7 +238,8 @@ const IotaPaymentModal = ({
                 </span>
               </div>
               <div className="text-sm text-green-700">
-                +15 IOTA tokens added to your loyalty balance
+                +{loyaltyProgress.currentTier.rewardTokens} IOTA tokens added to
+                your loyalty balance
               </div>
             </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "../components/shared/ui/button";
 import {
@@ -8,8 +8,16 @@ import {
   CardTitle,
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
-import { CheckCircle, ArrowLeft, Calendar, Clock, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
+  QrCode,
+} from "lucide-react";
 import { toast } from "sonner";
+import QRCode from "qrcode";
 
 interface BookingDetails {
   id: string;
@@ -22,6 +30,8 @@ interface BookingDetails {
   paymentStatus: string;
   spaceLocation: string;
   amenities: string[];
+  transactionHash?: string;
+  stripePaymentIntentId?: string;
 }
 
 const BookingSuccessPage = () => {
@@ -31,6 +41,93 @@ const BookingSuccessPage = () => {
     null
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
+
+  const generateQRCode = useCallback(async (booking: BookingDetails) => {
+    try {
+      const bookingData = {
+        bookingId: booking.id,
+        spaceName: booking.spaceName,
+        date: booking.date,
+        time: booking.time,
+        amount: booking.totalAmount,
+        paymentMethod: booking.paymentMethod,
+        transactionHash: booking.transactionHash,
+        stripePaymentIntentId: booking.stripePaymentIntentId,
+        status: booking.paymentStatus,
+        verified: true,
+        timestamp: new Date().toISOString(),
+      };
+
+      const qrData = JSON.stringify(bookingData);
+      const qrCodeUrl = await QRCode.toDataURL(qrData, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: "#1E40AF", // Blue color for better visibility
+          light: "#FFFFFF",
+        },
+      });
+
+      setQrCodeDataUrl(qrCodeUrl);
+    } catch (error) {
+      console.error("Error generating QR code:", error);
+    }
+  }, []);
+
+  const verifyPaymentAndGetBookingDetails = useCallback(
+    async (
+      paymentId: string,
+      isDemo: boolean = false,
+      isRealStripe: boolean = false,
+      paymentMethod?: string | null
+    ) => {
+      try {
+        // Simulate API call to verify payment and get booking details
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Mock booking details - in real app, this would come from your backend
+        const mockBookingDetails: BookingDetails = {
+          id: `booking_${Math.random().toString(36).substr(2, 9)}`,
+          spaceName: "Premium Meeting Room",
+          date: new Date().toLocaleDateString("en-MY"),
+          time: "09:00 - 11:00",
+          duration: 2,
+          totalAmount: 120,
+          paymentMethod: paymentMethod === "iota" ? "iota_wallet" : "stripe",
+          paymentStatus: "completed",
+          spaceLocation: "Kuala Lumpur, Malaysia",
+          amenities: ["Projector", "Whiteboard", "Coffee Service"],
+          transactionHash: paymentMethod === "iota" ? paymentId : undefined,
+          stripePaymentIntentId:
+            paymentMethod !== "iota" ? paymentId : undefined,
+        };
+
+        setBookingDetails(mockBookingDetails);
+
+        // Generate QR code for IOTA transactions
+        if (paymentMethod === "iota") {
+          await generateQRCode(mockBookingDetails);
+        }
+
+        if (paymentMethod === "iota") {
+          console.log("🎯 IOTA: Payment completed via IOTA wallet");
+          toast.success("IOTA payment completed! Your booking is confirmed.");
+        } else if (isRealStripe) {
+          console.log("🎯 REAL STRIPE: Payment completed via Stripe sandbox");
+          toast.success("Payment completed via Stripe sandbox!");
+        } else if (isDemo) {
+          console.log("🎯 DEMO: Payment completed successfully via redirect");
+          toast.success("Demo payment completed successfully!");
+        }
+      } catch {
+        toast.error("Failed to verify payment");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [generateQRCode]
+  );
 
   useEffect(() => {
     // Get payment details from URL params
@@ -52,50 +149,7 @@ const BookingSuccessPage = () => {
     } else {
       setIsLoading(false);
     }
-  }, [searchParams]);
-
-  const verifyPaymentAndGetBookingDetails = async (
-    paymentId: string,
-    isDemo: boolean = false,
-    isRealStripe: boolean = false,
-    paymentMethod?: string | null
-  ) => {
-    try {
-      // Simulate API call to verify payment and get booking details
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock booking details - in real app, this would come from your backend
-      const mockBookingDetails: BookingDetails = {
-        id: `booking_${Math.random().toString(36).substr(2, 9)}`,
-        spaceName: "Premium Meeting Room",
-        date: new Date().toLocaleDateString("en-MY"),
-        time: "09:00 - 11:00",
-        duration: 2,
-        totalAmount: 120,
-        paymentMethod: paymentMethod === "iota" ? "iota_wallet" : "stripe",
-        paymentStatus: "completed",
-        spaceLocation: "Kuala Lumpur, Malaysia",
-        amenities: ["Projector", "Whiteboard", "Coffee Service"],
-      };
-
-      setBookingDetails(mockBookingDetails);
-
-      if (paymentMethod === "iota") {
-        console.log("🎯 IOTA: Payment completed via IOTA wallet");
-        toast.success("IOTA payment completed! Your booking is confirmed.");
-      } else if (isRealStripe) {
-        console.log("🎯 REAL STRIPE: Payment completed via Stripe sandbox");
-        toast.success("Payment completed via Stripe sandbox!");
-      } else if (isDemo) {
-        console.log("🎯 DEMO: Payment completed successfully via redirect");
-        toast.success("Demo payment completed successfully!");
-      }
-    } catch {
-      toast.error("Failed to verify payment");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [searchParams, verifyPaymentAndGetBookingDetails]);
 
   if (isLoading) {
     return (
@@ -226,6 +280,58 @@ const BookingSuccessPage = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* QR Code for IOTA Transactions */}
+        {bookingDetails?.paymentMethod === "iota_wallet" && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <QrCode className="w-5 h-5 text-blue-600" />
+                Booking Verification QR Code
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center space-y-4">
+                <p className="text-sm text-gray-600">
+                  Scan this QR code to verify your booking details and IOTA
+                  transaction
+                </p>
+                {qrCodeDataUrl ? (
+                  <div className="flex justify-center">
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                      <img
+                        src={qrCodeDataUrl}
+                        alt="Booking QR Code"
+                        className="rounded-lg"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-center items-center h-48 bg-gray-50 rounded-lg">
+                    <div className="text-center">
+                      <QrCode className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">
+                        Generating QR code...
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div className="text-xs text-gray-500 space-y-1">
+                  <p>
+                    This QR code contains encrypted booking information for
+                    verification purposes
+                  </p>
+                  {bookingDetails.transactionHash && (
+                    <p className="font-mono text-xs bg-gray-100 p-2 rounded">
+                      TX Hash: {bookingDetails.transactionHash.slice(0, 8)}...
+                      {bookingDetails.transactionHash.slice(-8)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Next Steps */}
         <Card className="mb-6">

@@ -1,6 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import type { Stripe, PaymentIntentResult } from "@stripe/stripe-js";
 import type { StripePaymentData, BookingRequest } from "../types/booking";
+import { transactionService } from "./transactionService";
 
 // Initialize Stripe (you'll need to replace with your actual publishable key)
 const stripePromise = loadStripe(
@@ -104,6 +105,27 @@ export class StripeService {
       }
     } catch (error) {
       console.error("❌ DEMO: Error redirecting to payment:", error);
+      throw error;
+    }
+  }
+
+  // New method to simulate Stripe payment completion and store transaction
+  async simulateStripePaymentCompletion(
+    bookingRequest: BookingRequest,
+    paymentIntentId: string
+  ): Promise<void> {
+    try {
+      console.log("🎯 DEMO: Simulating Stripe payment completion...");
+
+      // Use transaction service to simulate and store Stripe transaction
+      await transactionService.simulateStripeTransaction(
+        bookingRequest,
+        paymentIntentId
+      );
+
+      console.log("✅ DEMO: Stripe payment completed and stored");
+    } catch (error) {
+      console.error("❌ DEMO: Error completing Stripe payment:", error);
       throw error;
     }
   }

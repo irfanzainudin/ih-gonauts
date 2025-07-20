@@ -9,13 +9,15 @@ import {
 } from "../components/shared/ui/card";
 import { Badge } from "../components/shared/ui/badge";
 import Footer from "../components/landing/Footer";
-import { DollarSign, Shield, BarChart3, Zap } from "lucide-react";
+import QRScannerModal from "../components/shared/ui/qr-scanner-modal";
+import { DollarSign, Shield, BarChart3, Zap, QrCode } from "lucide-react";
 
 const OwnerLandingPage = () => {
   const navigate = useNavigate();
   const [animatedStats, setAnimatedStats] = useState<(number | string)[]>([
     0, 0, 0, 0,
   ]);
+  const [showQRScanner, setShowQRScanner] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
 
   // Animation hook for counting up
@@ -143,6 +145,15 @@ const OwnerLandingPage = () => {
               >
                 Owner Dashboard
               </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white text-white hover:bg-white/20 px-8 bg-transparent"
+                onClick={() => setShowQRScanner(true)}
+              >
+                <QrCode className="w-4 h-4 mr-2" />
+                QR Scanner
+              </Button>
             </div>
           </div>
         </div>
@@ -265,6 +276,16 @@ const OwnerLandingPage = () => {
 
       {/* Footer */}
       <Footer showUserCTA={false} />
+
+      {/* QR Scanner Modal */}
+      <QRScannerModal
+        isOpen={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onScanSuccess={(bookingData) => {
+          console.log("Booking verified:", bookingData);
+          // In a real app, this would update the booking status or send verification to backend
+        }}
+      />
     </div>
   );
 };
