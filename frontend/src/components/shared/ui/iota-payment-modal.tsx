@@ -78,7 +78,7 @@ const IotaPaymentModal = ({
         <DialogHeader>
           <DialogTitle>Payment with IOTA Wallet</DialogTitle>
           <DialogDescription>
-            Complete your booking with secure IOTA tokens
+            Complete your booking with secure SHRD tokens
           </DialogDescription>
         </DialogHeader>
 
@@ -150,7 +150,7 @@ const IotaPaymentModal = ({
                 </span>
               </div>
               <div className="text-sm text-yellow-700">
-                Earn {loyaltyProgress.currentTier.rewardTokens} IOTA tokens with
+                Earn {loyaltyProgress.currentTier.rewardTokens} SHRD tokens with
                 this booking ({loyaltyProgress.currentTier.name} tier)
               </div>
             </div>
@@ -238,7 +238,7 @@ const IotaPaymentModal = ({
                 </span>
               </div>
               <div className="text-sm text-green-700">
-                +{loyaltyProgress.currentTier.rewardTokens} IOTA tokens added to
+                +{loyaltyProgress.currentTier.rewardTokens} SHRD tokens added to
                 your loyalty balance
               </div>
             </div>

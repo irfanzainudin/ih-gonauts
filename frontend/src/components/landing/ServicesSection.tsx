@@ -31,14 +31,14 @@ const ServicesSection = () => {
       id: 3,
       title: "Event Access Management",
       description:
-        "Streamlined access control for conferences, workshops, and private events. Blockchain-verified tickets and seamless entry management systems.",
+        "Host workshops or private events with digital tickets and decentralized entry logs.",
       icon: <Ticket className="w-8 h-8 text-blue-600" />,
     },
     {
       id: 4,
       title: "Loyalty Rewards Program",
       description:
-        "Earn IOTA tokens through our Gas Station loyalty program. Get rewarded for frequent bookings, referrals, and community engagement activities.",
+        "Earn SHRD tokens for every booking — then redeem for discounts, free sessions, or VIP perks. Your loyalty = your benefits.",
       icon: <Trophy className="w-8 h-8 text-blue-600" />,
     },
   ];

@@ -104,7 +104,7 @@ const LoyaltyNotification = ({
             </div>
             <div className="text-sm text-gray-700 space-y-1">
               <div>
-                • {loyaltyProgress.currentTier.rewardTokens} IOTA tokens per
+                • {loyaltyProgress.currentTier.rewardTokens} SHRD tokens per
                 booking
               </div>
               <div>

@@ -48,28 +48,28 @@ export const useLoyalty = (bookings: BookingHistory[]) => {
           tokensPerBooking: 5,
           discountPercentage: 5,
           description:
-            "Earn 5 IOTA tokens per booking and get 5% discount on future bookings.",
+            "Earn 5 SHRD tokens per booking and get 5% discount on future bookings.",
         };
       case "gold":
         return {
           tokensPerBooking: 15,
           discountPercentage: 10,
           description:
-            "Earn 15 IOTA tokens per booking and get 10% discount on future bookings.",
+            "Earn 15 SHRD tokens per booking and get 10% discount on future bookings.",
         };
       case "platinum":
         return {
           tokensPerBooking: 30,
           discountPercentage: 15,
           description:
-            "Earn 30 IOTA tokens per booking and get 15% discount on future bookings.",
+            "Earn 30 SHRD tokens per booking and get 15% discount on future bookings.",
         };
       case "diamond":
         return {
           tokensPerBooking: 50,
           discountPercentage: 20,
           description:
-            "Earn 50 IOTA tokens per booking and get 20% discount on future bookings.",
+            "Earn 50 SHRD tokens per booking and get 20% discount on future bookings.",
         };
       default:
         return {

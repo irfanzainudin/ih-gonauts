@@ -198,9 +198,9 @@ export const getLoyaltyRewardDescription = (tier: LoyaltyTier): string => {
   if (tier.id === "bronze") {
     return "Start booking to earn rewards!";
   }
-  return `Earn ${tier.rewardTokens} IOTA tokens per booking and get ${tier.discountPercentage}% discount on future bookings.`;
+  return `Earn ${tier.rewardTokens} SHRD tokens per booking and get ${tier.discountPercentage}% discount on future bookings.`;
 };
 
 export const formatLoyaltyTokens = (tokens: number): string => {
-  return `${tokens} IOTA`;
+  return `${tokens} SHRD`;
 };

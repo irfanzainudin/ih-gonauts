@@ -21,15 +21,14 @@ const HeroSection = () => {
         <div className="text-center">
           {/* Main Heading */}
           <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-            Find & Book Spaces
-            <span className="block text-blue-600">Across Malaysia</span>
+            Discover & Book Spaces,
+            <span className="block text-blue-600">Seamlessly</span>
           </h1>
 
           {/* Description */}
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Discover and instantly book sport venues, meeting rooms, coworking
-            spaces, and event halls. From badminton courts to conference rooms -
-            find the perfect space for your needs.
+            From futsal courts to conference rooms — search, book, and access
+            shared spaces in seconds. Earn rewards every time you book.
           </p>
 
           {/* Quick Search/CTA */}
@@ -40,7 +39,7 @@ const HeroSection = () => {
                   htmlFor="space-type"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  What space do you need?
+                  Choose a space type
                 </Label>
                 <Select>
                   <SelectTrigger>

@@ -21,9 +21,9 @@ const FAQSection = () => {
     },
     {
       id: "item-3",
-      question: "How does the IOTA Gas Station loyalty program work?",
+      question: "How does the SharedSpace.my loyalty program work?",
       answer:
-        "Every booking, referral, and platform engagement earns you IOTA tokens through our Gas Station integration. These tokens can be redeemed for future bookings, exclusive perks, premium space upgrades, or even transferred to your IOTA wallet. The more you use our platform, the more rewards you earn!",
+        "Every booking, referral, and meaningful engagement on our platform earns you SHRD — our native loyalty token (SharedToken). Powered by IOTA's seamless infrastructure, SHRD is automatically distributed through our smart contract system, no crypto setup required. You can redeem SHRD for future bookings, unlock discounts, access premium venues, or save them for exclusive perks down the line. The more you book and contribute, the more you earn — it's loyalty that truly gives back.",
     },
     {
       id: "item-4",
